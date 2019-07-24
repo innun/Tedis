@@ -1,8 +1,8 @@
-# RESP (REdis Serialization Protocol
+## 一、RESP (REdis Serialization Protocol) 规范
 
 [RESP protocol](https://redis.io/topics/protocol#request-response-model)
 
-#### RESP中服务端响应的数据类型
+#### 1.1 RESP中服务端响应的数据类型
 
 1. **Simple Strings** 第一个字节是"+"
 2. **Errors**第一个字节是"-"
@@ -67,20 +67,11 @@
     bar\r\n
     ```
 
-#### 请求响应模型
+#### 1.2 CS交互规范
 
-- 有两种特例 （TODO）：
+- 客户端以 **Bulk Strings组成的Array**  为格式想服务端发送命令
 
-  1. 支持管道，多条命令可以通过一次写一起发送，然后等待响应
-
-     [管道](https://redis.io/topics/pipelining) 
-
-  2. 支持订阅， 服务端主动推送
-
-- CS交互
-
-  - 客户端以 **Bulk Strings组成的Array**  为格式想服务端发送命令
-  - 服务端以 **数据类型** 中的其中一种作为响应
+- 服务端以 **数据类型** 中的其中一种作为响应
 
   示例：
 
@@ -91,4 +82,44 @@
   S => C :48293\r\n
   ```
 
+#### 1.3 特例 （TODO）：
+
+1. 支持管道，多条命令可以通过一次写一起发送，然后等待响应
+
+   [管道](https://redis.io/topics/pipelining) 
+
+2. 支持订阅， 服务端主动推送
+
+## 二、项目结构
+
+#### Request流程
+
+```mermaid
+graph TD   
+   subgraph Tedis
+   A[User] --cmd string--> B[RequestGenerator]
+   B --Request--> C[TedisConnection]
+   C --Request--> D[RequestEncoder]
+   D --cmd bytes--> E[client socket]
+   end
+   
+   
+
   
+   
+   
+```
+
+#### Response
+
+```mermaid
+graph TD   
+   subgraph Tedis
+   F[client socket] --response bytes-->G[RESPDataParser]
+   G --data string--> H[ResponseDecoder]
+   H --Response--> I[TedisPromise]
+   J --get--> I
+   I --result--> J
+   end
+```
+
