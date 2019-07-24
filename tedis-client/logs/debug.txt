@@ -1,0 +1,11 @@
+2019-07-24 10:45:30,751 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelHandler.channelActive(18) | Connected to /47.103.2.229:6379
+2019-07-24 10:45:30,771 INFO [main] com.tedis.client.TedisConnection.execute(40) | Request send => 4251
+3651
+836984
+3652
+84698384
+3652
+48484848
+
+2019-07-24 10:46:48,258 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelHandler.channelActive(18) | Connected to /47.103.2.229:6379
+2019-07-24 10:46:48,296 INFO [main] com.tedis.client.TedisConnection.execute(40) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$4\r\n0000\r\n
