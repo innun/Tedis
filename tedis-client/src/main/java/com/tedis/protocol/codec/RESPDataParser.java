@@ -13,39 +13,57 @@ public class RESPDataParser {
 
     public static ParseInfo parseSimpleString(byte[] bytes, int offset) {
         String s = scanString(bytes, offset);
+        if (s == null) {
+            return new ParseInfo(0, null);
+        }
         int rawLen = 1 + s.length() + CRLF_LEN;
         return new ParseInfo(rawLen, QUOTE + s + QUOTE);
     }
 
     public static ParseInfo parseError(byte[] bytes, int offset) {
         String s = scanString(bytes, offset);
+        if (s == null) {
+            return new ParseInfo(0, null);
+        }
         int rawLen = 1 + s.length() + CRLF_LEN;
         return new ParseInfo(rawLen, s);
     }
 
     public static ParseInfo parseInteger(byte[] bytes, int offset) {
         String s = scanString(bytes, offset);
+        if (s == null) {
+            return new ParseInfo(0, null);
+        }
         int rawLen = 1 + s.length() + CRLF_LEN;
         return new ParseInfo(rawLen, s);
     }
 
     public static ParseInfo parseBulkString(byte[] bytes, int offset) {
         String len = scanString(bytes, offset);
+        if (len == null) {
+            return new ParseInfo(0, null);
+        }
         if (len.equals("-1")) {
             return new ParseInfo(5, NULL);
         }
         String s = scanString(bytes,offset + len.length() + CRLF_LEN);
+        if (s == null) {
+            return new ParseInfo(0, null);
+        }
         int rawLen = 1 + len.length() + CRLF_LEN + s.length() + CRLF_LEN;
         return new ParseInfo(rawLen, QUOTE + s + QUOTE);
     }
 
     public static ParseInfo parseArray(byte[] bytes, int offset) {
         String elmNum = scanString(bytes, offset);
+        if (elmNum == null) {
+            return new ParseInfo(0, null);
+        }
         int num = Integer.parseInt(elmNum);
-        offset = offset + elmNum.length() + CRLF_LEN;
         if (num == -1) {
             return new ParseInfo(5,NULL);
         }
+        offset = offset + elmNum.length() + CRLF_LEN;
         int rawLen = 1 + elmNum.length() + CRLF_LEN;
         StringBuilder sb = new StringBuilder();
         sb.append(LBRACKET);
@@ -74,6 +92,9 @@ public class RESPDataParser {
                 }
             }
             assert p != null;
+            if (p.getResult() == null) {
+                return new ParseInfo(0, null);
+            }
             offset = offset + p.getRawLen();
             rawLen = rawLen + p.getRawLen();
             sb.append(p.getResult());
@@ -88,9 +109,12 @@ public class RESPDataParser {
     private static String scanString(byte[] bytes, int offset) {
         StringBuilder sb = new StringBuilder();
         char b;
-        while((b = (char) bytes[offset]) != '\r') {
+        while(offset < bytes.length && (b = (char) bytes[offset]) != '\r') {
             sb.append(b);
             offset++;
+        }
+        if (offset > bytes.length - 1) {
+            return null;
         }
         return sb.toString();
     }

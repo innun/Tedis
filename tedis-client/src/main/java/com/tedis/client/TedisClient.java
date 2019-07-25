@@ -1,5 +1,7 @@
 package com.tedis.client;
 
+import com.tedis.client.api.Client;
+import com.tedis.client.api.Connection;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;

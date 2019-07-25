@@ -1,4 +1,4 @@
-package com.tedis.client;
+package com.tedis.client.api;
 
 public interface Connection {
 

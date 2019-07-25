@@ -1,4 +1,55 @@
-### Channel
+## 一、Netty架构
+
+```mermaid
+graph TD
+subgraph workerEventLoopGroup
+O[EventLoopGroup] --> ...
+end
+subgraph bossEventLoopGroup
+A[EventLoopGroup] --> B[EventLoop]
+A --> C[...]
+A --> D[EventLoop]
+B --> E[Channel]
+B --> F[...]
+B --> G[Channel]
+D --> H[Channel]
+D --> I[...]
+D --> J[Channel]
+E --> K[ChannelHandler1]
+G --> M[ChannelHandler1]
+subgraph ChannelPipeline
+K --> L[CahnnelHandler2]
+end
+subgraph ChannelPipeline
+M --> N[CahnnelHandler2]
+end
+end
+
+
+```
+
+- 一个EventLoopGroup 包含一个或者多个EventLoop（一个或多个线程）；
+
+- 一个EventLoop 在它的生命周期内只和一个Thread 绑定（ 串行处理绑定在其上多个的Channel），这里通过串行化减小了上下文切换的开销，但是同时可以调整EventLoopGroup的线程数来充分利用多核处理器通过并行提高效率
+
+- 一个Channel 在它的生命周期内只注册于一个EventLoop，一个EventLoop 可能会被分配给一个或多个Channel。
+
+- 一个Channel都有一个ChannelPipeline，ChannelPipeline中的Handler可以通过@Sharable注解标注，以供多个ChannelPipeline调用，但是线程不安全的Handler不可标注，比如说常用的消息解码器这种（因为会缓存socket数据，相当于是有线程状态的）
+
+- **注意**：服务端通常处理一条连接有以下几个步骤：
+
+  1. 从socket读取字节流
+
+  2. 解码字节流得到java object
+
+  3. 使用obj来执行业务逻辑
+
+  4. 将响应的java obj编码成字节流
+  5.  将字节流写入socket
+
+  值得注意的地方在于第3步，通常我们将业务逻辑都是放在handler里面执行，但是上文提到，多个channel是串行执行的，所以如果业务逻辑很耗时的话，容易阻塞其他channel读写，这种情况下就考虑只把I/O（非阻塞IO）放在EventLoop线程执行，业务逻辑放到线程池处理。
+
+### 1.1 Channel
 
 生命周期：
 
@@ -7,15 +58,8 @@
 
 
 
-* 一个EventLoopGroup 包含一个或者多个EventLoop；
-* 一个EventLoop 在它的生命周期内只和一个Thread 绑定；
-* 所有由EventLoop 处理的I/O 事件都将在它专有的Thread 上被处理；
-* 一个Channel 在它的生命周期内只注册于一个EventLoop；
-* 一个EventLoop 可能会被分配给一个或多个Channel。
 
-
-
-### ChannelHandlerContext 、 ChannelHandler 和 ChannelPipeline
+### 1.2 ChannelHandlerContext 、 ChannelHandler 和 ChannelPipeline
 
 * 三者关系
 
@@ -37,7 +81,7 @@
 
   使用@Sharable注解就可以让多个pipeline使用同一个handler，但是考虑到，多个channel的并发调用可能造成线程不安全的问题，所以不要共享的handler不应该存在修改状态的操作。
 
-### ByteBuf
+### 1.3 ByteBuf
 
 ![1563851417879](C:\Users\jing\AppData\Roaming\Typora\typora-user-images\1563851417879.png)
 

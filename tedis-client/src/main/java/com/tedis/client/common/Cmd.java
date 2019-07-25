@@ -1,4 +1,4 @@
-package com.tedis.common;
+package com.tedis.client.common;
 
 public enum Cmd {
     SET("SET"),
