@@ -1,6 +1,6 @@
 package com.tedis.client;
 
-import com.tedis.client.api.Connection;
+import com.tedis.api.Connection;
 import com.tedis.client.common.Cmd;
 import com.tedis.protocol.Request;
 import io.netty.channel.Channel;
@@ -25,15 +25,38 @@ public class TedisConnection implements Connection {
         this.channel = channel;
     }
 
+    @Override
+    public String auth(String pass) {
+        return execute(Cmd.AUTH, pass);
+    }
 
     @Override
-    public String set(String key, String value) {
-        return execute(Cmd.SET, key, value);
+    public String set(String key, String value, String... optional) {
+        String[] params = new String[optional.length + 2];
+        params[0] = key;
+        params[1] = value;
+        System.arraycopy(optional, 0, params, 2, params.length - 2);
+        return execute(Cmd.SET, params);
     }
 
     @Override
     public String get(String key) {
         return execute(Cmd.GET, key);
+    }
+
+    @Override
+    public String setnx(String key, String value) {
+        return execute(Cmd.SETNX, key, value);
+    }
+
+    @Override
+    public String incr(String key) {
+        return execute(Cmd.INCR, key);
+    }
+
+    @Override
+    public String del(String... keys) {
+        return execute(Cmd.DEL, keys);
     }
 
     private String execute(Cmd cmd, String... params) {
@@ -54,4 +77,5 @@ public class TedisConnection implements Connection {
         }
         return result;
     }
+
 }

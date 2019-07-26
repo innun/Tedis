@@ -53,7 +53,14 @@ public class ResponseDecoder extends ByteToMessageDecoder {
             case RESPData.ERROR_PREFIX: {
                 res = RESPDataParser.parseError(bytes, 1);
                 String[] error = res.getResult().split(" ");
-                response = new Response(RESPData.ERROR_TYPE, error[0], error[1]);
+                StringBuilder temp = new StringBuilder();
+                for (int i = 1; i < error.length; i++) {
+                    temp.append(error[i]);
+                    if (i < error.length - 1) {
+                        temp.append(" ");
+                    }
+                }
+                response = new Response(RESPData.ERROR_TYPE, error[0], temp.toString());
             }
         }
         assert response != null;

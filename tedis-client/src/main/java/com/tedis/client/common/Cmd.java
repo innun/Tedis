@@ -2,7 +2,12 @@ package com.tedis.client.common;
 
 public enum Cmd {
     SET("SET"),
-    GET("GET");
+    GET("GET"),
+    SETNX("SETNX"),
+    INCR("INCR"),
+    AUTH("AUTH"),
+    DEL("DEL");
+
 
     private String cmd;
 

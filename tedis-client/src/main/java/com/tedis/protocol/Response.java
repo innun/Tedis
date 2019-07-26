@@ -45,6 +45,7 @@ public class Response {
     public String toString() {
         return "Response{" +
                 "type=" + type +
+                ", errorType='" + errorType + '\'' +
                 ", result='" + result + '\'' +
                 '}';
     }

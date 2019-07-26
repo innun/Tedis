@@ -1,0 +1,421 @@
+2019-07-24 10:45:30,751 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelActive(18) | Connected to /47.103.2.229:6379
+2019-07-24 10:45:30,771 INFO [main] com.tedis.client.TedisConnection.execute(40) | Request send => 4251
+3651
+836984
+3652
+84698384
+3652
+48484848
+
+2019-07-24 10:46:48,258 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelActive(18) | Connected to /47.103.2.229:6379
+2019-07-24 10:46:48,296 INFO [main] com.tedis.client.TedisConnection.execute(40) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$4\r\n0000\r\n
+2019-07-25 15:33:47,239 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(22) | connect to [id: 0xbadd8cc5, L:/172.17.217.77:54166 - R:/47.103.2.229:6379]
+2019-07-25 15:33:47,354 INFO [main] com.tedis.client.TedisConnection.execute(50) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 15:33:47,490 WARN [nioEventLoopGroup-2-1] io.netty.channel.DefaultChannelPipeline.onUnhandledInboundException(1188) | An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: java.lang.UnsupportedOperationException: direct buffer
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1434)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:965)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:648)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:583)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:462)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:897)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.UnsupportedOperationException: direct buffer
+	at io.netty.buffer.PooledUnsafeDirectByteBuf.array(PooledUnsafeDirectByteBuf.java:343)
+	at com.tedis.client.handler.ResponseDecoder.decode(ResponseDecoder.java:27)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441)
+	... 16 more
+2019-07-25 15:40:42,896 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(23) | connect to [id: 0xb621287c, L:/172.17.217.77:60805 - R:/47.103.2.229:6379]
+2019-07-25 15:40:42,986 INFO [main] com.tedis.client.TedisConnection.execute(50) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 15:42:07,493 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(23) | connect to [id: 0x7c18ff59, L:/172.17.217.77:60844 - R:/47.103.2.229:6379]
+2019-07-25 15:42:07,546 INFO [main] com.tedis.client.TedisConnection.execute(51) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 15:42:07,676 WARN [nioEventLoopGroup-2-1] io.netty.channel.DefaultChannelPipeline.onUnhandledInboundException(1188) | An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: ResponseDecoder.decode() did not read anything but decoded a message.
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:461)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1434)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:965)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:648)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:583)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:462)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:897)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+2019-07-25 15:44:35,241 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(23) | connect to [id: 0x2f821797, L:/172.17.217.77:60886 - R:/47.103.2.229:6379]
+2019-07-25 15:44:35,291 INFO [main] com.tedis.client.TedisConnection.execute(51) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 15:44:35,411 WARN [nioEventLoopGroup-2-1] io.netty.channel.DefaultChannelPipeline.onUnhandledInboundException(1188) | An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: ResponseDecoder.decode() did not read anything but decoded a message.
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:461)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1434)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:965)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:648)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:583)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:462)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:897)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+2019-07-25 15:45:29,006 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(23) | connect to [id: 0xc4789f9e, L:/172.17.217.77:60920 - R:/47.103.2.229:6379]
+2019-07-25 15:45:29,032 INFO [main] com.tedis.client.TedisConnection.execute(51) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 15:45:29,182 WARN [nioEventLoopGroup-2-1] io.netty.channel.DefaultChannelPipeline.onUnhandledInboundException(1188) | An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: ResponseDecoder.decode() did not read anything but decoded a message.
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:461)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1434)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:965)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:648)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:583)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:462)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:897)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+2019-07-25 15:45:57,688 DEBUG [main] io.netty.util.internal.logging.InternalLoggerFactory.newDefaultFactory(43) | Using SLF4J as the default logging framework
+2019-07-25 15:45:57,708 DEBUG [main] io.netty.channel.MultithreadEventLoopGroup.<clinit>(44) | -Dio.netty.eventLoopThreads: {}
+2019-07-25 15:45:57,828 DEBUG [main] io.netty.channel.nio.NioEventLoop.<clinit>(104) | -Dio.netty.noKeySetOptimization: {}
+2019-07-25 15:45:57,829 DEBUG [main] io.netty.channel.nio.NioEventLoop.<clinit>(105) | -Dio.netty.selectorAutoRebuildThreshold: {}
+2019-07-25 15:45:57,901 DEBUG [main] io.netty.util.internal.PlatformDependent.isWindows0(959) | Platform: Windows
+2019-07-25 15:45:57,909 DEBUG [main] io.netty.util.internal.PlatformDependent0.explicitNoUnsafeCause0(395) | -Dio.netty.noUnsafe: {}
+2019-07-25 15:45:57,914 DEBUG [main] io.netty.util.internal.PlatformDependent0.javaVersion0(871) | Java version: {}
+2019-07-25 15:45:57,935 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(120) | sun.misc.Unsafe.theUnsafe: available
+2019-07-25 15:45:57,941 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(144) | sun.misc.Unsafe.copyMemory: available
+2019-07-25 15:45:57,946 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(182) | java.nio.Buffer.address: available
+2019-07-25 15:45:57,950 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(243) | direct buffer constructor: available
+2019-07-25 15:45:57,954 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(313) | java.nio.Bits.unaligned: available, {}
+2019-07-25 15:45:57,956 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(378) | jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+2019-07-25 15:45:57,958 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(385) | java.nio.DirectByteBuffer.<init>(long, int): {}
+2019-07-25 15:45:57,960 DEBUG [main] io.netty.util.internal.PlatformDependent.unsafeUnavailabilityCause0(996) | sun.misc.Unsafe: {}
+2019-07-25 15:45:57,965 DEBUG [main] io.netty.util.internal.PlatformDependent.tmpdir0(1090) | -Dio.netty.tmpdir: {} (java.io.tmpdir)
+2019-07-25 15:45:57,974 DEBUG [main] io.netty.util.internal.PlatformDependent.bitMode0(1169) | -Dio.netty.bitMode: {} (sun.arch.data.model)
+2019-07-25 15:45:57,982 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(158) | -Dio.netty.maxDirectMemory: {} bytes
+2019-07-25 15:45:57,984 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(164) | -Dio.netty.uninitializedArrayAllocationThreshold: {}
+2019-07-25 15:45:57,991 DEBUG [main] io.netty.util.internal.CleanerJava6.<clinit>(92) | java.nio.ByteBuffer.cleaner(): available
+2019-07-25 15:45:57,993 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(184) | -Dio.netty.noPreferDirect: {}
+2019-07-25 15:45:58,032 DEBUG [main] io.netty.util.internal.PlatformDependent$Mpsc.<clinit>(864) | org.jctools-core.MpscChunkedArrayQueue: available
+2019-07-25 15:45:58,616 DEBUG [main] io.netty.channel.DefaultChannelId.<clinit>(79) | -Dio.netty.processId: {} (auto-detected)
+2019-07-25 15:45:58,634 DEBUG [main] io.netty.util.NetUtil.<clinit>(139) | -Djava.net.preferIPv4Stack: {}
+2019-07-25 15:45:58,660 DEBUG [main] io.netty.util.NetUtil.<clinit>(140) | -Djava.net.preferIPv6Addresses: {}
+2019-07-25 15:45:58,965 DEBUG [main] io.netty.util.NetUtil.<clinit>(224) | Loopback interface: {} ({}, {})
+2019-07-25 15:45:58,969 DEBUG [main] io.netty.util.NetUtil$1.run(289) | Failed to get SOMAXCONN from sysctl and file {}. Default: {}
+2019-07-25 15:45:59,239 DEBUG [main] io.netty.channel.DefaultChannelId.<clinit>(101) | -Dio.netty.machineId: {} (auto-detected)
+2019-07-25 15:45:59,270 DEBUG [main] io.netty.util.internal.InternalThreadLocalMap.<clinit>(54) | -Dio.netty.threadLocalMap.stringBuilder.initialSize: {}
+2019-07-25 15:45:59,271 DEBUG [main] io.netty.util.internal.InternalThreadLocalMap.<clinit>(57) | -Dio.netty.threadLocalMap.stringBuilder.maxSize: {}
+2019-07-25 15:45:59,352 DEBUG [main] io.netty.util.ResourceLeakDetector.<clinit>(121) | -D{}: {}
+2019-07-25 15:45:59,357 DEBUG [main] io.netty.util.ResourceLeakDetector.<clinit>(122) | -D{}: {}
+2019-07-25 15:45:59,577 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(120) | -Dio.netty.allocator.numHeapArenas: {}
+2019-07-25 15:45:59,581 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(121) | -Dio.netty.allocator.numDirectArenas: {}
+2019-07-25 15:45:59,585 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(123) | -Dio.netty.allocator.pageSize: {}
+2019-07-25 15:45:59,588 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(128) | -Dio.netty.allocator.maxOrder: {}
+2019-07-25 15:45:59,596 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(132) | -Dio.netty.allocator.chunkSize: {}
+2019-07-25 15:45:59,598 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(133) | -Dio.netty.allocator.tinyCacheSize: {}
+2019-07-25 15:45:59,600 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(134) | -Dio.netty.allocator.smallCacheSize: {}
+2019-07-25 15:45:59,604 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(135) | -Dio.netty.allocator.normalCacheSize: {}
+2019-07-25 15:45:59,606 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(136) | -Dio.netty.allocator.maxCachedBufferCapacity: {}
+2019-07-25 15:45:59,607 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(137) | -Dio.netty.allocator.cacheTrimInterval: {}
+2019-07-25 15:45:59,611 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(138) | -Dio.netty.allocator.useCacheForAllThreads: {}
+2019-07-25 15:45:59,676 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(83) | -Dio.netty.allocator.type: {}
+2019-07-25 15:45:59,678 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(92) | -Dio.netty.threadLocalDirectBufferSize: {}
+2019-07-25 15:45:59,680 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(95) | -Dio.netty.maxThreadLocalCharBufferSize: {}
+2019-07-25 15:45:59,849 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(23) | connect to [id: 0x6888180a, L:/172.17.217.77:60949 - R:/47.103.2.229:6379]
+2019-07-25 15:45:59,953 DEBUG [main] io.netty.util.Recycler.<clinit>(96) | -Dio.netty.recycler.maxCapacityPerThread: {}
+2019-07-25 15:45:59,956 DEBUG [main] io.netty.util.Recycler.<clinit>(97) | -Dio.netty.recycler.maxSharedCapacityFactor: {}
+2019-07-25 15:45:59,961 DEBUG [main] io.netty.util.Recycler.<clinit>(98) | -Dio.netty.recycler.linkCapacity: {}
+2019-07-25 15:45:59,964 DEBUG [main] io.netty.util.Recycler.<clinit>(99) | -Dio.netty.recycler.ratio: {}
+2019-07-25 15:45:59,982 INFO [main] com.tedis.client.TedisConnection.execute(51) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 15:46:00,023 DEBUG [nioEventLoopGroup-2-1] io.netty.buffer.AbstractByteBuf.<clinit>(61) | -D{}: {}
+2019-07-25 15:46:00,024 DEBUG [nioEventLoopGroup-2-1] io.netty.buffer.AbstractByteBuf.<clinit>(62) | -D{}: {}
+2019-07-25 15:46:00,029 DEBUG [nioEventLoopGroup-2-1] io.netty.util.ResourceLeakDetectorFactory$DefaultResourceLeakDetectorFactory.newResourceLeakDetector(202) | Loaded default ResourceLeakDetector: {}
+2019-07-25 15:46:00,100 DEBUG [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.decode(63) | Response{type=0, result='"OK"'}
+2019-07-25 15:46:00,101 DEBUG [nioEventLoopGroup-2-1] io.netty.channel.DefaultChannelPipeline.onUnhandledInboundMessage(1218) | Discarded inbound message {} that reached at the tail of the pipeline. Please check your pipeline configuration.
+2019-07-25 15:46:00,105 WARN [nioEventLoopGroup-2-1] io.netty.channel.DefaultChannelPipeline.onUnhandledInboundException(1188) | An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: ResponseDecoder.decode() did not read anything but decoded a message.
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:461)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1434)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:965)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:648)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:583)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:462)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:897)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+2019-07-25 15:56:54,441 DEBUG [main] io.netty.util.internal.logging.InternalLoggerFactory.newDefaultFactory(43) | Using SLF4J as the default logging framework
+2019-07-25 15:56:54,472 DEBUG [main] io.netty.channel.MultithreadEventLoopGroup.<clinit>(44) | -Dio.netty.eventLoopThreads: {}
+2019-07-25 15:56:54,596 DEBUG [main] io.netty.channel.nio.NioEventLoop.<clinit>(104) | -Dio.netty.noKeySetOptimization: {}
+2019-07-25 15:56:54,598 DEBUG [main] io.netty.channel.nio.NioEventLoop.<clinit>(105) | -Dio.netty.selectorAutoRebuildThreshold: {}
+2019-07-25 15:56:54,692 DEBUG [main] io.netty.util.internal.PlatformDependent.isWindows0(959) | Platform: Windows
+2019-07-25 15:56:54,699 DEBUG [main] io.netty.util.internal.PlatformDependent0.explicitNoUnsafeCause0(395) | -Dio.netty.noUnsafe: {}
+2019-07-25 15:56:54,702 DEBUG [main] io.netty.util.internal.PlatformDependent0.javaVersion0(871) | Java version: {}
+2019-07-25 15:56:54,727 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(120) | sun.misc.Unsafe.theUnsafe: available
+2019-07-25 15:56:54,734 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(144) | sun.misc.Unsafe.copyMemory: available
+2019-07-25 15:56:54,737 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(182) | java.nio.Buffer.address: available
+2019-07-25 15:56:54,741 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(243) | direct buffer constructor: available
+2019-07-25 15:56:54,745 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(313) | java.nio.Bits.unaligned: available, {}
+2019-07-25 15:56:54,747 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(378) | jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+2019-07-25 15:56:54,749 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(385) | java.nio.DirectByteBuffer.<init>(long, int): {}
+2019-07-25 15:56:54,750 DEBUG [main] io.netty.util.internal.PlatformDependent.unsafeUnavailabilityCause0(996) | sun.misc.Unsafe: {}
+2019-07-25 15:56:54,753 DEBUG [main] io.netty.util.internal.PlatformDependent.tmpdir0(1090) | -Dio.netty.tmpdir: {} (java.io.tmpdir)
+2019-07-25 15:56:54,761 DEBUG [main] io.netty.util.internal.PlatformDependent.bitMode0(1169) | -Dio.netty.bitMode: {} (sun.arch.data.model)
+2019-07-25 15:56:54,768 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(158) | -Dio.netty.maxDirectMemory: {} bytes
+2019-07-25 15:56:54,770 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(164) | -Dio.netty.uninitializedArrayAllocationThreshold: {}
+2019-07-25 15:56:54,776 DEBUG [main] io.netty.util.internal.CleanerJava6.<clinit>(92) | java.nio.ByteBuffer.cleaner(): available
+2019-07-25 15:56:54,779 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(184) | -Dio.netty.noPreferDirect: {}
+2019-07-25 15:56:54,825 DEBUG [main] io.netty.util.internal.PlatformDependent$Mpsc.<clinit>(864) | org.jctools-core.MpscChunkedArrayQueue: available
+2019-07-25 15:56:55,468 DEBUG [main] io.netty.channel.DefaultChannelId.<clinit>(79) | -Dio.netty.processId: {} (auto-detected)
+2019-07-25 15:56:55,476 DEBUG [main] io.netty.util.NetUtil.<clinit>(139) | -Djava.net.preferIPv4Stack: {}
+2019-07-25 15:56:55,477 DEBUG [main] io.netty.util.NetUtil.<clinit>(140) | -Djava.net.preferIPv6Addresses: {}
+2019-07-25 15:56:55,651 DEBUG [main] io.netty.util.NetUtil.<clinit>(224) | Loopback interface: {} ({}, {})
+2019-07-25 15:56:55,656 DEBUG [main] io.netty.util.NetUtil$1.run(289) | Failed to get SOMAXCONN from sysctl and file {}. Default: {}
+2019-07-25 15:56:55,881 DEBUG [main] io.netty.channel.DefaultChannelId.<clinit>(101) | -Dio.netty.machineId: {} (auto-detected)
+2019-07-25 15:56:55,922 DEBUG [main] io.netty.util.internal.InternalThreadLocalMap.<clinit>(54) | -Dio.netty.threadLocalMap.stringBuilder.initialSize: {}
+2019-07-25 15:56:55,926 DEBUG [main] io.netty.util.internal.InternalThreadLocalMap.<clinit>(57) | -Dio.netty.threadLocalMap.stringBuilder.maxSize: {}
+2019-07-25 15:56:56,004 DEBUG [main] io.netty.util.ResourceLeakDetector.<clinit>(121) | -D{}: {}
+2019-07-25 15:56:56,011 DEBUG [main] io.netty.util.ResourceLeakDetector.<clinit>(122) | -D{}: {}
+2019-07-25 15:56:56,166 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(120) | -Dio.netty.allocator.numHeapArenas: {}
+2019-07-25 15:56:56,168 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(121) | -Dio.netty.allocator.numDirectArenas: {}
+2019-07-25 15:56:56,169 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(123) | -Dio.netty.allocator.pageSize: {}
+2019-07-25 15:56:56,174 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(128) | -Dio.netty.allocator.maxOrder: {}
+2019-07-25 15:56:56,178 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(132) | -Dio.netty.allocator.chunkSize: {}
+2019-07-25 15:56:56,180 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(133) | -Dio.netty.allocator.tinyCacheSize: {}
+2019-07-25 15:56:56,181 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(134) | -Dio.netty.allocator.smallCacheSize: {}
+2019-07-25 15:56:56,183 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(135) | -Dio.netty.allocator.normalCacheSize: {}
+2019-07-25 15:56:56,184 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(136) | -Dio.netty.allocator.maxCachedBufferCapacity: {}
+2019-07-25 15:56:56,185 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(137) | -Dio.netty.allocator.cacheTrimInterval: {}
+2019-07-25 15:56:56,187 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(138) | -Dio.netty.allocator.useCacheForAllThreads: {}
+2019-07-25 15:56:56,237 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(83) | -Dio.netty.allocator.type: {}
+2019-07-25 15:56:56,240 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(92) | -Dio.netty.threadLocalDirectBufferSize: {}
+2019-07-25 15:56:56,242 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(95) | -Dio.netty.maxThreadLocalCharBufferSize: {}
+2019-07-25 15:56:56,433 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0xada006c3, L:/172.17.217.77:65099 - R:/47.103.2.229:6379]
+2019-07-25 15:56:56,496 DEBUG [main] io.netty.util.Recycler.<clinit>(96) | -Dio.netty.recycler.maxCapacityPerThread: {}
+2019-07-25 15:56:56,497 DEBUG [main] io.netty.util.Recycler.<clinit>(97) | -Dio.netty.recycler.maxSharedCapacityFactor: {}
+2019-07-25 15:56:56,499 DEBUG [main] io.netty.util.Recycler.<clinit>(98) | -Dio.netty.recycler.linkCapacity: {}
+2019-07-25 15:56:56,500 DEBUG [main] io.netty.util.Recycler.<clinit>(99) | -Dio.netty.recycler.ratio: {}
+2019-07-25 15:56:56,510 INFO [main] com.tedis.client.TedisConnection.execute(51) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 15:56:56,557 DEBUG [nioEventLoopGroup-2-1] io.netty.buffer.AbstractByteBuf.<clinit>(61) | -D{}: {}
+2019-07-25 15:56:56,558 DEBUG [nioEventLoopGroup-2-1] io.netty.buffer.AbstractByteBuf.<clinit>(62) | -D{}: {}
+2019-07-25 15:56:56,565 DEBUG [nioEventLoopGroup-2-1] io.netty.util.ResourceLeakDetectorFactory$DefaultResourceLeakDetectorFactory.newResourceLeakDetector(202) | Loaded default ResourceLeakDetector: {}
+2019-07-25 15:56:56,638 DEBUG [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.decode(67) | Response{type=0, result='"OK"'}
+2019-07-25 15:56:56,639 DEBUG [nioEventLoopGroup-2-1] io.netty.channel.DefaultChannelPipeline.onUnhandledInboundMessage(1218) | Discarded inbound message {} that reached at the tail of the pipeline. Please check your pipeline configuration.
+2019-07-25 15:58:55,048 DEBUG [main] io.netty.util.internal.logging.InternalLoggerFactory.newDefaultFactory(43) | Using SLF4J as the default logging framework
+2019-07-25 15:58:55,073 DEBUG [main] io.netty.channel.MultithreadEventLoopGroup.<clinit>(44) | -Dio.netty.eventLoopThreads: {}
+2019-07-25 15:58:55,195 DEBUG [main] io.netty.channel.nio.NioEventLoop.<clinit>(104) | -Dio.netty.noKeySetOptimization: {}
+2019-07-25 15:58:55,198 DEBUG [main] io.netty.channel.nio.NioEventLoop.<clinit>(105) | -Dio.netty.selectorAutoRebuildThreshold: {}
+2019-07-25 15:58:55,272 DEBUG [main] io.netty.util.internal.PlatformDependent.isWindows0(959) | Platform: Windows
+2019-07-25 15:58:55,281 DEBUG [main] io.netty.util.internal.PlatformDependent0.explicitNoUnsafeCause0(395) | -Dio.netty.noUnsafe: {}
+2019-07-25 15:58:55,285 DEBUG [main] io.netty.util.internal.PlatformDependent0.javaVersion0(871) | Java version: {}
+2019-07-25 15:58:55,311 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(120) | sun.misc.Unsafe.theUnsafe: available
+2019-07-25 15:58:55,316 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(144) | sun.misc.Unsafe.copyMemory: available
+2019-07-25 15:58:55,319 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(182) | java.nio.Buffer.address: available
+2019-07-25 15:58:55,323 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(243) | direct buffer constructor: available
+2019-07-25 15:58:55,327 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(313) | java.nio.Bits.unaligned: available, {}
+2019-07-25 15:58:55,329 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(378) | jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+2019-07-25 15:58:55,331 DEBUG [main] io.netty.util.internal.PlatformDependent0.<clinit>(385) | java.nio.DirectByteBuffer.<init>(long, int): {}
+2019-07-25 15:58:55,333 DEBUG [main] io.netty.util.internal.PlatformDependent.unsafeUnavailabilityCause0(996) | sun.misc.Unsafe: {}
+2019-07-25 15:58:55,337 DEBUG [main] io.netty.util.internal.PlatformDependent.tmpdir0(1090) | -Dio.netty.tmpdir: {} (java.io.tmpdir)
+2019-07-25 15:58:55,341 DEBUG [main] io.netty.util.internal.PlatformDependent.bitMode0(1169) | -Dio.netty.bitMode: {} (sun.arch.data.model)
+2019-07-25 15:58:55,350 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(158) | -Dio.netty.maxDirectMemory: {} bytes
+2019-07-25 15:58:55,352 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(164) | -Dio.netty.uninitializedArrayAllocationThreshold: {}
+2019-07-25 15:58:55,357 DEBUG [main] io.netty.util.internal.CleanerJava6.<clinit>(92) | java.nio.ByteBuffer.cleaner(): available
+2019-07-25 15:58:55,360 DEBUG [main] io.netty.util.internal.PlatformDependent.<clinit>(184) | -Dio.netty.noPreferDirect: {}
+2019-07-25 15:58:55,400 DEBUG [main] io.netty.util.internal.PlatformDependent$Mpsc.<clinit>(864) | org.jctools-core.MpscChunkedArrayQueue: available
+2019-07-25 15:58:55,973 DEBUG [main] io.netty.channel.DefaultChannelId.<clinit>(79) | -Dio.netty.processId: {} (auto-detected)
+2019-07-25 15:58:55,981 DEBUG [main] io.netty.util.NetUtil.<clinit>(139) | -Djava.net.preferIPv4Stack: {}
+2019-07-25 15:58:55,983 DEBUG [main] io.netty.util.NetUtil.<clinit>(140) | -Djava.net.preferIPv6Addresses: {}
+2019-07-25 15:58:56,134 DEBUG [main] io.netty.util.NetUtil.<clinit>(224) | Loopback interface: {} ({}, {})
+2019-07-25 15:58:56,139 DEBUG [main] io.netty.util.NetUtil$1.run(289) | Failed to get SOMAXCONN from sysctl and file {}. Default: {}
+2019-07-25 15:58:56,447 DEBUG [main] io.netty.channel.DefaultChannelId.<clinit>(101) | -Dio.netty.machineId: {} (auto-detected)
+2019-07-25 15:58:56,487 DEBUG [main] io.netty.util.internal.InternalThreadLocalMap.<clinit>(54) | -Dio.netty.threadLocalMap.stringBuilder.initialSize: {}
+2019-07-25 15:58:56,490 DEBUG [main] io.netty.util.internal.InternalThreadLocalMap.<clinit>(57) | -Dio.netty.threadLocalMap.stringBuilder.maxSize: {}
+2019-07-25 15:58:56,539 DEBUG [main] io.netty.util.ResourceLeakDetector.<clinit>(121) | -D{}: {}
+2019-07-25 15:58:56,540 DEBUG [main] io.netty.util.ResourceLeakDetector.<clinit>(122) | -D{}: {}
+2019-07-25 15:58:56,710 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(120) | -Dio.netty.allocator.numHeapArenas: {}
+2019-07-25 15:58:56,715 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(121) | -Dio.netty.allocator.numDirectArenas: {}
+2019-07-25 15:58:56,716 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(123) | -Dio.netty.allocator.pageSize: {}
+2019-07-25 15:58:56,750 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(128) | -Dio.netty.allocator.maxOrder: {}
+2019-07-25 15:58:56,752 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(132) | -Dio.netty.allocator.chunkSize: {}
+2019-07-25 15:58:56,755 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(133) | -Dio.netty.allocator.tinyCacheSize: {}
+2019-07-25 15:58:56,756 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(134) | -Dio.netty.allocator.smallCacheSize: {}
+2019-07-25 15:58:56,758 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(135) | -Dio.netty.allocator.normalCacheSize: {}
+2019-07-25 15:58:56,762 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(136) | -Dio.netty.allocator.maxCachedBufferCapacity: {}
+2019-07-25 15:58:56,763 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(137) | -Dio.netty.allocator.cacheTrimInterval: {}
+2019-07-25 15:58:56,765 DEBUG [main] io.netty.buffer.PooledByteBufAllocator.<clinit>(138) | -Dio.netty.allocator.useCacheForAllThreads: {}
+2019-07-25 15:58:56,816 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(83) | -Dio.netty.allocator.type: {}
+2019-07-25 15:58:56,819 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(92) | -Dio.netty.threadLocalDirectBufferSize: {}
+2019-07-25 15:58:56,820 DEBUG [main] io.netty.buffer.ByteBufUtil.<clinit>(95) | -Dio.netty.maxThreadLocalCharBufferSize: {}
+2019-07-25 15:58:57,023 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0x5b658fdb, L:/172.17.217.77:65139 - R:/47.103.2.229:6379]
+2019-07-25 15:58:57,063 DEBUG [main] io.netty.util.Recycler.<clinit>(96) | -Dio.netty.recycler.maxCapacityPerThread: {}
+2019-07-25 15:58:57,065 DEBUG [main] io.netty.util.Recycler.<clinit>(97) | -Dio.netty.recycler.maxSharedCapacityFactor: {}
+2019-07-25 15:58:57,068 DEBUG [main] io.netty.util.Recycler.<clinit>(98) | -Dio.netty.recycler.linkCapacity: {}
+2019-07-25 15:58:57,069 DEBUG [main] io.netty.util.Recycler.<clinit>(99) | -Dio.netty.recycler.ratio: {}
+2019-07-25 15:58:57,082 INFO [main] com.tedis.client.TedisConnection.execute(51) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 15:58:57,126 DEBUG [nioEventLoopGroup-2-1] io.netty.buffer.AbstractByteBuf.<clinit>(61) | -D{}: {}
+2019-07-25 15:58:57,127 DEBUG [nioEventLoopGroup-2-1] io.netty.buffer.AbstractByteBuf.<clinit>(62) | -D{}: {}
+2019-07-25 15:58:57,132 DEBUG [nioEventLoopGroup-2-1] io.netty.util.ResourceLeakDetectorFactory$DefaultResourceLeakDetectorFactory.newResourceLeakDetector(202) | Loaded default ResourceLeakDetector: {}
+2019-07-25 15:58:57,207 DEBUG [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.decode(68) | Response{type=0, result='"OK"'}
+2019-07-25 15:58:57,208 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | get response => Response{type=0, result='"OK"'}
+2019-07-25 16:00:19,560 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0x09451d08, L:/172.17.217.77:61691 - R:/47.103.2.229:6379]
+2019-07-25 16:00:19,612 INFO [main] com.tedis.client.TedisConnection.execute(51) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 16:00:19,750 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | get response => Response{type=0, result='"OK"'}
+2019-07-25 16:01:28,917 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0x0e67ca5d, L:/172.17.217.77:61734 - R:/47.103.2.229:6379]
+2019-07-25 16:01:28,987 INFO [main] com.tedis.client.TedisConnection.execute(50) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 16:01:29,127 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | get response => Response{type=0, result='"OK"'}
+2019-07-25 16:03:43,120 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0xb4950bd5, L:/172.17.217.77:61772 - R:/47.103.2.229:6379]
+2019-07-25 16:03:43,291 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | get response => Response{type=0, result='"OK"'}
+2019-07-25 16:03:43,293 INFO [main] com.tedis.client.TedisConnection.execute(53) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 16:04:32,470 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0xc02fcebd, L:/172.17.217.77:61810 - R:/47.103.2.229:6379]
+2019-07-25 16:04:32,702 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | get response => Response{type=0, result='"OK"'}
+2019-07-25 16:04:32,705 INFO [main] com.tedis.client.TedisConnection.execute(53) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 16:04:32,726 INFO [main] com.tedis.client.TedisConnection.execute(53) | Request send => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n
+2019-07-25 16:04:32,762 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | get response => Response{type=3, result='"1"'}
+2019-07-25 16:08:30,413 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0x4b866126, L:/172.17.217.77:61866 - R:/47.103.2.229:6379]
+2019-07-25 16:08:30,595 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=0, result='"OK"'}
+2019-07-25 16:08:30,596 INFO [main] com.tedis.client.TedisConnection.execute(54) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 16:08:30,641 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=3, result='"1"'}
+2019-07-25 16:08:30,642 INFO [main] com.tedis.client.TedisConnection.execute(54) | Request send => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n
+2019-07-25 16:09:06,405 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0x7c6c1f36, L:/172.17.217.77:61896 - R:/47.103.2.229:6379]
+2019-07-25 16:09:06,603 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=0, result='"OK"'}
+2019-07-25 16:09:06,605 INFO [main] com.tedis.client.TedisConnection.execute(54) | Request send => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n
+2019-07-25 16:09:06,655 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=3, result='"1"'}
+2019-07-25 16:09:06,657 INFO [main] com.tedis.client.TedisConnection.execute(54) | Request send => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n
+2019-07-25 16:21:03,512 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | connect to [id: 0x8618de1e, L:/172.17.217.77:62007 - R:/47.103.2.229:6379]
+2019-07-25 16:21:03,680 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=0, result='"OK"'}
+2019-07-25 16:21:03,681 INFO [main] com.tedis.client.TedisConnection.execute(52) | Request send => Request{SET TEST 1}
+2019-07-25 16:21:03,730 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=3, result='"1"'}
+2019-07-25 16:21:03,744 INFO [main] com.tedis.client.TedisConnection.execute(52) | Request send => Request{GET TEST}
+2019-07-25 16:38:01,367 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x381f590b, L:/172.17.217.77:62167 - R:/47.103.2.229:6379]
+2019-07-25 16:38:01,493 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncode(72) | Request sent => *3\r\n
+$3\r\n
+SET\r\n
+$4\r\n
+TEST\r\n
+$1\r\n
+1\r\n
+ (Request{SET TEST 1})
+2019-07-25 16:38:01,571 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(82) | Response arrived => +OK\r\n
+ (Response{type=0, result='"OK"'})
+2019-07-25 16:38:01,572 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=0, result='"OK"'}
+2019-07-25 16:38:01,574 INFO [main] com.tedis.client.TedisConnection.execute(52) | Request created => Request{SET TEST 1}
+2019-07-25 16:38:01,605 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncode(72) | Request sent => *2\r\n
+$3\r\n
+GET\r\n
+$4\r\n
+TEST\r\n
+ (Request{GET TEST})
+2019-07-25 16:38:01,640 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(82) | Response arrived => $1\r\n
+1\r\n
+ (Response{type=3, result='"1"'})
+2019-07-25 16:38:01,641 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=3, result='"1"'}
+2019-07-25 16:38:01,643 INFO [main] com.tedis.client.TedisConnection.execute(52) | Request created => Request{GET TEST}
+2019-07-25 16:39:14,049 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0xad3ba4cd, L:/172.17.217.77:62198 - R:/47.103.2.229:6379]
+2019-07-25 16:39:14,204 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncode(72) | Request sent => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n (Request{SET TEST 1})
+2019-07-25 16:39:14,272 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(82) | Response arrived => +OK\r\n (Response{type=0, result='"OK"'})
+2019-07-25 16:39:14,273 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=0, result='"OK"'}
+2019-07-25 16:39:14,278 INFO [main] com.tedis.client.TedisConnection.execute(52) | Request created => Request{SET TEST 1}
+2019-07-25 16:39:14,296 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncode(72) | Request sent => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n (Request{GET TEST})
+2019-07-25 16:39:14,333 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(82) | Response arrived => $1\r\n1\r\n (Response{type=3, result='"1"'})
+2019-07-25 16:39:14,334 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.TedisChannelInBoundHandler.channelRead(22) | Response arrive => Response{type=3, result='"1"'}
+2019-07-25 16:39:14,335 INFO [main] com.tedis.client.TedisConnection.execute(52) | Request created => Request{GET TEST}
+2019-07-25 16:40:40,078 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x892bfc0c, L:/172.17.217.77:62234 - R:/47.103.2.229:6379]
+2019-07-25 16:40:40,191 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncode(72) | Request sent => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n (Request{SET TEST 1})
+2019-07-25 16:40:40,254 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => +OK\r\n (Response{type=0, result='"OK"'})
+2019-07-25 16:40:40,256 INFO [main] com.tedis.client.TedisConnection.execute(52) | Request created => Request{SET TEST 1}
+2019-07-25 16:40:40,271 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncode(72) | Request sent => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n (Request{GET TEST})
+2019-07-25 16:40:40,314 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => $1\r\n1\r\n (Response{type=3, result='"1"'})
+2019-07-25 16:40:40,316 INFO [main] com.tedis.client.TedisConnection.execute(52) | Request created => Request{GET TEST}
+2019-07-25 16:41:08,553 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0xb53d4f7e, L:/172.17.217.77:62260 - R:/47.103.2.229:6379]
+2019-07-25 16:41:08,648 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncode(72) | Request sent => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n (Request{SET TEST 1})
+2019-07-25 16:41:08,729 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => +OK\r\n (Response{type=0, result='"OK"'})
+2019-07-25 16:41:08,754 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncode(72) | Request sent => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n (Request{GET TEST})
+2019-07-25 16:41:08,787 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => $1\r\n1\r\n (Response{type=3, result='"1"'})
+2019-07-25 16:42:05,070 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0xd4025ffa, L:/172.17.217.77:62301 - R:/47.103.2.229:6379]
+2019-07-25 16:42:05,167 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n (Request{SET TEST 1})
+2019-07-25 16:42:05,240 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => +OK\r\n (Response{type=0, result='"OK"'})
+2019-07-25 16:42:05,253 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n (Request{GET TEST})
+2019-07-25 16:42:05,296 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => $1\r\n1\r\n (Response{type=3, result='"1"'})
+2019-07-25 17:16:57,138 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x4899a8a7, L:/172.17.217.77:51513 - R:/47.103.2.229:6379]
+2019-07-25 17:16:57,295 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n (Request{SET TEST 1})
+2019-07-25 17:16:57,358 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => +OK\r\n (Response{type=0, result='"OK"'})
+2019-07-25 17:16:57,374 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n (Request{GET TEST})
+2019-07-25 17:16:57,407 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => $1\r\n1\r\n (Response{type=3, result='"1"'})
+2019-07-25 17:27:58,136 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x9cf69088, L:/172.17.217.77:51631 - R:/47.103.2.229:6379]
+2019-07-25 17:27:58,237 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *3\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n (Request{SET TEST 1})
+2019-07-25 17:27:58,300 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => +OK\r\n (Response{type=0, result='"OK"'})
+2019-07-25 17:27:58,330 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *2\r\n$3\r\nGET\r\n$4\r\nTEST\r\n (Request{GET TEST})
+2019-07-25 17:27:58,362 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => $1\r\n1\r\n (Response{type=3, result='"1"'})
+2019-07-25 17:41:39,813 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x7a588982, L:/172.17.217.77:60194 - R:/47.103.2.229:6379]
+2019-07-25 17:41:39,939 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *5\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n$2\r\nEX\r\n$5\r\n10000\r\n (Request{SET TEST 1 EX 10000})
+2019-07-25 17:41:40,003 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => +OK\r\n (Response{type=0, result='"OK"'})
+2019-07-25 17:44:10,963 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x21880809, L:/172.17.217.77:60245 - R:/47.103.2.229:6379]
+2019-07-25 17:44:11,078 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *5\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n$2\r\nEX\r\n$1\r\na\r\n (Request{SET TEST 1 EX a})
+2019-07-25 17:44:11,144 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(83) | Response arrived => -ERR value is not an integer or out of range\r\n (Response{type=1, result='value'})
+2019-07-25 17:49:17,101 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x327700bd, L:/172.17.217.77:60316 - R:/47.103.2.229:6379]
+2019-07-25 17:49:17,179 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *5\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n$2\r\nEX\r\n$1\r\na\r\n (Request{SET TEST 1 EX a})
+2019-07-25 17:49:17,246 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(87) | Response arrived => -ERR value is not an integer or out of range\r\n (Response{type=1, errorType='ERR', result='valueisnotanintegeroroutofrange'})
+2019-07-25 17:50:10,571 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0xcfe7e544, L:/172.17.217.77:60346 - R:/47.103.2.229:6379]
+2019-07-25 17:50:10,753 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *5\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n$2\r\nEX\r\n$1\r\na\r\n (Request{SET TEST 1 EX a})
+2019-07-25 17:50:10,822 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => -ERR value is not an integer or out of range\r\n (Response{type=1, errorType='ERR', result='value is not an integer or out of range '})
+2019-07-25 17:50:30,625 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x4990c101, L:/172.17.217.77:60372 - R:/47.103.2.229:6379]
+2019-07-25 17:50:30,741 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *5\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n$2\r\nEX\r\n$1\r\na\r\n (Request{SET TEST 1 EX a})
+2019-07-25 17:50:30,814 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => -ERR value is not an integer or out of range\r\n (Response{type=1, errorType='ERR', result='value is not an integer or out of range '})
+2019-07-25 17:50:53,012 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x017535ae, L:/172.17.217.77:60399 - R:/47.103.2.229:6379]
+2019-07-25 17:50:53,110 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *5\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n$2\r\nEX\r\n$1\r\na\r\n (Request{SET TEST 1 EX a})
+2019-07-25 17:50:53,191 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => -ERR value is not an integer or out of range\r\n (Response{type=1, errorType='ERR', result='value is not an integer or out of range'})
+2019-07-25 18:59:33,169 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x9b02c690, L:/172.17.217.77:60945 - R:/47.103.2.229:6379]
+2019-07-25 18:59:33,278 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *3\r\n$5\r\nSETNX\r\n$5\r\nHELLO\r\n$1\r\n2\r\n (Request{SETNX HELLO 2})
+2019-07-25 18:59:33,353 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => :1\r\n (Response{type=2, errorType='null', result='1'})
+2019-07-25 19:01:11,957 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x138a5909, L:/172.17.217.77:60989 - R:/47.103.2.229:6379]
+2019-07-25 19:01:12,089 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *3\r\n$5\r\nSETNX\r\n$5\r\nHELLO\r\n$1\r\n2\r\n (Request{SETNX HELLO 2})
+2019-07-25 19:01:12,154 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => :0\r\n (Response{type=2, errorType='null', result='0'})
+2019-07-25 19:11:50,168 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0xba682eac, L:/172.17.217.77:54123 - R:/47.103.2.229:6379]
+2019-07-25 19:11:50,289 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *2\r\n$3\r\nGET\r\n$3\r\nTES\r\n (Request{GET TES})
+2019-07-25 19:11:50,358 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => $-1\r\n (Response{type=3, errorType='null', result='nil'})
+2019-07-25 19:11:50,377 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *2\r\n$4\r\nINCR\r\n$1\r\nT\r\n (Request{INCR T})
+2019-07-25 19:11:50,414 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => :1\r\n (Response{type=2, errorType='null', result='1'})
+2019-07-25 19:22:37,911 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x2a4ccb33, L:/172.17.217.77:59826 - R:/47.103.2.229:6379]
+2019-07-25 19:22:38,036 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *4\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n$2\r\nEX\r\n (Request{SET TEST 1 EX})
+2019-07-25 19:22:38,100 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => -ERR syntax error\r\n (Response{type=1, errorType='ERR', result='syntax error'})
+2019-07-25 19:23:36,202 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.channelActive(24) | Connection created [id: 0x3b31f7a5, L:/172.17.217.77:59858 - R:/47.103.2.229:6379]
+2019-07-25 19:23:36,281 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *5\r\n$3\r\nSET\r\n$4\r\nTEST\r\n$1\r\n1\r\n$2\r\nEX\r\n$1\r\n1\r\n (Request{SET TEST 1 EX 1})
+2019-07-25 19:23:36,341 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => +OK\r\n (Response{type=0, errorType='null', result='"OK"'})
+2019-07-25 19:23:36,365 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *2\r\n$3\r\nGET\r\n$3\r\nTES\r\n (Request{GET TES})
+2019-07-25 19:23:36,399 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => $-1\r\n (Response{type=3, errorType='null', result='nil'})
+2019-07-25 19:23:36,402 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.RequestEncoder.logEncoder(72) | Request sent => *2\r\n$4\r\nINCR\r\n$1\r\nT\r\n (Request{INCR T})
+2019-07-25 19:23:36,438 INFO [nioEventLoopGroup-2-1] com.tedis.client.handler.ResponseDecoder.logDecoder(90) | Response arrived => :2\r\n (Response{type=2, errorType='null', result='2'})
