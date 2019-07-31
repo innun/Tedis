@@ -2,46 +2,50 @@ package com.tedis.locks;
 
 import com.tedis.api.Connection;
 import com.tedis.api.Lock;
-import com.tedis.client.TedisClient;
-import com.tedis.client.TedisConfig;
-import com.tedis.client.exception.ConnectFailException;
 import com.tedis.client.exception.IllegalLockOperation;
+import com.tedis.util.LuaScriptReader;
+import com.tedis.util.UniqueCodeGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class TedisLock implements Lock {
 
     private static Logger log = LoggerFactory.getLogger(TedisLock.class);
 
-    private static final String LOCK_KEY = "LOCK_KEY";
-    private static Map<String, Connection> map = new ConcurrentHashMap<>();
+    static final String LOCK_KEY;
+    private static String expireTime;
 
-    public TedisLock() {}
+    private Connection conn;
+    private static final String UNIQUE_CODE;
+    private UpdateExTimeTask task;
+    private Thread updateThread;
+
+    static {
+        LOCK_KEY = "TEDIS_LOCK_KEY";
+        UNIQUE_CODE = UniqueCodeGenerator.uniqueCode();
+    }
+
+    /**
+     * default lock expire time: 3600 seconds
+     */
+    public TedisLock(Connection conn) {
+        this(conn,3600);
+    }
+
+    public TedisLock(Connection conn, int expireTime) {
+        this.conn = conn;
+        task = new UpdateExTimeTask(conn);
+        updateThread = new Thread(task);
+        TedisLock.expireTime = String.valueOf(expireTime);
+    }
 
     @Override
     public void lock() {
-        String threadName = Thread.currentThread().getName();
-        Connection conn = null;
-        if (map.containsKey(threadName)) {
-            conn = map.get(threadName);
-        } else {
-            try {
-                conn = TedisClient.create(TedisConfig.DEFAULT_CONFIG).connect();
-                map.put(threadName, conn);
-            } catch (ConnectFailException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        if (conn == null) {
-            throw new ConnectFailException("lock init fail");
-        }
         while (true) {
-            String result = conn.setnx(LOCK_KEY, "value");
-            if (result.equals("1")) {
+            String result = conn.set(LOCK_KEY, UNIQUE_CODE, "NX", "EX", expireTime).sync();
+            if (!result.equals("nil")) {
                 log.info(Thread.currentThread().getName() + " acquires lock success");
+//                updateThread.start();
                 break;
             }
             log.info(Thread.currentThread().getName() + " acquires lock fail");
@@ -50,10 +54,22 @@ public class TedisLock implements Lock {
 
     @Override
     public void unlock() {
-        Connection conn = map.get(Thread.currentThread().getName());
         if (conn == null) {
             throw new IllegalLockOperation("current thread does not maintain a lock");
         }
-        conn.del(LOCK_KEY);
+//        String value = conn.get(LOCK_KEY);
+//        if (value.substring(1, value.length() - 1).equals(UNIQUE_CODE)) {
+//            conn.del(LOCK_KEY);
+//        }
+//        task.stop();
+        unlockWithLua();
+    }
+
+    private void unlockWithLua() {
+        String script = LuaScriptReader.read("unlock.lua");
+        if (script == null) {
+            log.error("lua script read fail");
+        }
+        conn.eval(script, 1, LOCK_KEY, UNIQUE_CODE);
     }
 }

@@ -1,6 +1,8 @@
 package com.tedis.client.handler;
 
 import com.tedis.client.exception.RequestErrorException;
+import com.tedis.protocol.Command;
+import com.tedis.protocol.Commands;
 import com.tedis.protocol.RESPData;
 import com.tedis.protocol.Request;
 import io.netty.buffer.ByteBuf;
@@ -22,21 +24,37 @@ public class RequestEncoder extends MessageToByteEncoder<Request> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Request msg, ByteBuf out) {
         try {
-            byte[] bytes = encode(msg.getCmdParts());
-            out.writeBytes(bytes);
-            logEncoder(msg, bytes);
-        } catch (RequestErrorException e) {
+            Object payload = msg.getPayload();
+            if (payload instanceof Command) {
+                Command cmd = (Command) payload;
+                byte[] bytes = encode(cmd);
+                out.writeBytes(bytes);
+                logEncoder(msg, bytes);
+            }
+            if (payload instanceof Commands) {
+                Commands cmds = (Commands) payload;
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                for (Command cmd : cmds.getCmds()) {
+                    byte[] bytes = encode(cmd);
+                    baos.write(bytes);
+                    out.writeBytes(CRLF.getBytes());
+                }
+                out.writeBytes(baos.toByteArray());
+                logEncoder(msg, baos.toByteArray());
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static byte[] encode(List<String> members) throws RequestErrorException {
+    public static byte[] encode(Command cmd) throws RequestErrorException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             baos.write((byte) RESPData.ARRAY_PREFIX);
-            int num = members.size();
+            List<String> parts = cmd.getParts();
+            int num = parts.size();
             baos.write(String.valueOf(num).getBytes());
             baos.write(CRLF.getBytes());
-            for (String m : members) {
+            for (String m : parts) {
                 byte[] element = bulkStringToBytes(m);
                 baos.write(element);
             }
@@ -47,7 +65,7 @@ public class RequestEncoder extends MessageToByteEncoder<Request> {
         }
     }
 
-    private static byte[] bulkStringToBytes(String str) throws IOException{
+    private static byte[] bulkStringToBytes(String str) throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             baos.write((byte) RESPData.BULK_STRING_PREFIX);
             baos.write(String.valueOf(str.length()).getBytes());
@@ -58,6 +76,7 @@ public class RequestEncoder extends MessageToByteEncoder<Request> {
         }
     }
 
+    @SuppressWarnings("Duplicates")
     private void logEncoder(Request req, byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {

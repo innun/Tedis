@@ -33,9 +33,13 @@ public final class TedisClient implements Client {
     private void init() {
         eventLoopGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
+        bootstrap.group(eventLoopGroup)
+                .channel(NioSocketChannel.class)
+                .handler(new TedisChannelInitializer())
+                .option(ChannelOption.TCP_NODELAY, true);
     }
 
-    public static TedisClient create(TedisConfig config) {
+    public static TedisClient create(TedisClientConfig config) {
         TedisClient instance = new TedisClient();
         instance.host = config.getHost();
         instance.port = config.getPort();
@@ -44,18 +48,19 @@ public final class TedisClient implements Client {
     }
 
 
-    @Override
-    public Connection connect() throws ConnectFailException, InterruptedException {
-        bootstrap.group(eventLoopGroup)
-                .channel(NioSocketChannel.class)
-                .handler(new TedisChannelInitializer())
-                .option(ChannelOption.TCP_NODELAY, false);
 
-        TedisConnection conn = null;
-        ChannelFuture f = bootstrap.connect(host, port).sync();
-        channel = (SocketChannel) f.channel();
+    @Override
+    public Connection connect() throws ConnectFailException {
+        TedisConnection conn;
+        ChannelFuture f;
+        try {
+            f = bootstrap.connect(host, port).sync();
+            channel = (SocketChannel) f.channel();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         conn = new TedisConnection(channel);
-        if (!conn.auth(password).equals("\"OK\"")) {
+        if (!conn.auth(password).sync().equals("\"OK\"")) {
             throw new ConnectFailException("invalid password");
         }
         return conn;

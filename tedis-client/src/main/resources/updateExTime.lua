@@ -1,0 +1,1 @@
+redis.call("EXPIRE", KEYS[1], ARGV[1])

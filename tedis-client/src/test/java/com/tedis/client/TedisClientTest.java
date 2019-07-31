@@ -1,7 +1,8 @@
 package com.tedis.client;
 
 import com.tedis.api.Connection;
-import com.tedis.client.exception.ConnectFailException;
+import com.tedis.client.pool.TedisPool;
+import com.tedis.client.pool.TedisPoolConfig;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,22 +11,20 @@ public class TedisClientTest {
 
     @Test
     public void clientTest() throws InterruptedException {
-        TedisConfig conf = TedisConfig.build()
-                .host("47.103.2.229")
-                .port(6379)
-                .password("98060");
-
-        TedisClient client = TedisClient.create(conf);
+        TedisClientConfig tedisClientConfig = TedisClientConfig.DEFAULT_CONFIG;
+        TedisPoolConfig tedisPoolConfig = TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG;
+        TedisPool pool = new TedisPool(tedisPoolConfig, tedisClientConfig);
+        Connection conn1 = null;
+        Connection conn2 = null;
         try {
-            Connection conn = client.connect();
-//        assertEquals(conn.set("TEST", "1", "EX", "1"), "\"OK\"");
-            assertEquals(conn.get("TES"), "nil");
-//        conn.incr("T");
-//        assertEquals(conn.setnx("HELLO", "2"), "1");
+            conn1 = pool.getConn();
+            conn2 = pool.getConn();
+        assertEquals(conn1.get("TES").sync(), "nil");
+        assertEquals(conn2.get("TES").sync(), "nil");
 
-        } catch (ConnectFailException e) {
-            e.printStackTrace();
-            client.close();
+        } finally {
+            conn1.returnToPool(pool);
+            conn2.returnToPool(pool);
         }
     }
 }

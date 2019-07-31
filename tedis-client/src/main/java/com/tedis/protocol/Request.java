@@ -1,33 +1,23 @@
 package com.tedis.protocol;
 
 
-import java.util.List;
+public class Request<T> {
+    private T payload;
 
-public class Request {
-    private List<String> cmdParts;
-
-    public Request(List<String> cmdParts) {
-        this.cmdParts = cmdParts;
+    public Request(T payload) {
+        this.payload = payload;
     }
 
-    public List<String> getCmdParts() {
-        return cmdParts;
+    public T getPayload() {
+        return payload;
     }
 
-    public void setCmdParts(List<String> cmdParts) {
-        this.cmdParts = cmdParts;
+    public void setPayload(T payload) {
+        this.payload = payload;
     }
 
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Request{");
-        for (int i = 0; i < cmdParts.size(); i++) {
-            sb.append(cmdParts.get(i));
-            if (i < cmdParts.size() - 1) {
-                sb.append(" ");
-            }
-        }
-        sb.append("}");
-        return sb.toString();
+        return payload.toString();
     }
 }

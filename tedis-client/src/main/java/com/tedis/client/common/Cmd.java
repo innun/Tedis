@@ -6,7 +6,11 @@ public enum Cmd {
     SETNX("SETNX"),
     INCR("INCR"),
     AUTH("AUTH"),
-    DEL("DEL");
+    DEL("DEL"),
+    EVAL("EVAL"),
+    TTL("TTL"),
+    HMSET("HMSET"),
+    PING("PING");
 
 
     private String cmd;
