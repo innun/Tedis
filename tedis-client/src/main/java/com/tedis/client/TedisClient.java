@@ -1,7 +1,6 @@
 package com.tedis.client;
 
 import com.tedis.api.Client;
-import com.tedis.api.Connection;
 import com.tedis.client.exception.ConnectFailException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -9,7 +8,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +18,7 @@ public final class TedisClient implements Client {
 
     private EventLoopGroup eventLoopGroup;
     private Bootstrap bootstrap;
-    private SocketChannel channel;
+    private Channel channel;
     private String host;
     private int port;
     private String password;
@@ -50,20 +48,20 @@ public final class TedisClient implements Client {
 
 
     @Override
-    public Connection connect() throws ConnectFailException {
+    public Channel connect() throws ConnectFailException {
         TedisConnection conn;
         ChannelFuture f;
         try {
             f = bootstrap.connect(host, port).sync();
-            channel = (SocketChannel) f.channel();
+            channel = f.channel();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         conn = new TedisConnection(channel);
-        if (!conn.auth(password).sync().equals("\"OK\"")) {
+        if (!conn.auth(password).sync().getResult().equals("\"OK\"")) {
             throw new ConnectFailException("invalid password");
         }
-        return conn;
+        return channel;
     }
 
     public Channel getChannel() {

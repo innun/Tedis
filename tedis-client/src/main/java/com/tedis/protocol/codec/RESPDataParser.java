@@ -9,7 +9,7 @@ public class RESPDataParser {
     private static final String NULL = "nil";
     private static final String LBRACKET = "[";
     private static final String RBRACKET = "]";
-    private static final String DOT = ", ";
+    private static final String COMMA = ", ";
 
     public static ParseInfo parseSimpleString(byte[] bytes, int offset) {
         String s = scanString(bytes, offset);
@@ -61,7 +61,7 @@ public class RESPDataParser {
         }
         int num = Integer.parseInt(elmNum);
         if (num == -1) {
-            return new ParseInfo(5,NULL);
+            return new ParseInfo(5, NULL);
         }
         offset = offset + elmNum.length() + CRLF_LEN;
         int rawLen = 1 + elmNum.length() + CRLF_LEN;
@@ -99,7 +99,7 @@ public class RESPDataParser {
             rawLen = rawLen + p.getRawLen();
             sb.append(p.getResult());
             if (i != num - 1) {
-                sb.append(DOT);
+                sb.append(COMMA);
             }
         }
         sb.append(RBRACKET);
@@ -113,7 +113,7 @@ public class RESPDataParser {
             sb.append(b);
             offset++;
         }
-        if (offset > bytes.length - 1) {
+        if (offset >= bytes.length - 1) {
             return null;
         }
         return sb.toString();

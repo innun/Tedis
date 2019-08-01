@@ -1,4 +1,4 @@
-package com.tedis.locks;
+package com.tedis.tools.locks;
 
 import com.tedis.client.TedisClientConfig;
 import com.tedis.client.pool.TedisPool;
@@ -26,8 +26,8 @@ class TedisLockTest {
 
         B = new TedisPool(TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
                 TedisClientConfig.DEFAULT_CONFIG);
-        ClientA_Lock = new TedisLock(A.getConn());
-        ClientB_Lock = new TedisLock(B.getConn());
+        ClientA_Lock = new TedisLock(A.connection());
+        ClientB_Lock = new TedisLock(B.connection());
     }
 
     @Test
@@ -103,8 +103,8 @@ class TedisLockTest {
 
     @Test
     public void updateExTimeTest() throws InterruptedException {
-        TedisLock lock1 = new TedisLock(A.getConn(), 10);
-        TedisLock lock2 = new TedisLock(B.getConn(),10);
+        TedisLock lock1 = new TedisLock(A.connection(), 10);
+        TedisLock lock2 = new TedisLock(B.connection(),10);
         Thread thread1 = new Thread(() -> {
             try {
                 lock1.lock();

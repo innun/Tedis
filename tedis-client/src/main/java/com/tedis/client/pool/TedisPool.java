@@ -1,9 +1,12 @@
 package com.tedis.client.pool;
 
 import com.tedis.api.Connection;
+import com.tedis.client.Pipeline;
 import com.tedis.client.TedisClient;
 import com.tedis.client.TedisClientConfig;
+import com.tedis.client.TedisConnection;
 import com.tedis.client.exception.ConnectFailException;
+import io.netty.channel.Channel;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,8 +19,7 @@ public class TedisPool {
     private final int coreConns;
     private final int maxConns;
     private TedisClient client;
-    private ConcurrentLinkedDeque<Connection> pool;
-
+    private ConcurrentLinkedDeque<Channel> pool;
 
     public TedisPool(TedisPoolConfig tedisPoolConfig, TedisClientConfig tedisConfig) {
         activeConns = new AtomicInteger(0);
@@ -32,35 +34,44 @@ public class TedisPool {
 
     private void initPool() {
         for (int i = 0; i < coreConns; i++) {
-            addConnection();
+            addChannel();
         }
     }
 
-    private void addConnection() {
+    private void addChannel() {
         pool.add(client.connect());
         idleConns.getAndIncrement();
         totalConns.getAndIncrement();
     }
 
-    public Connection getConn() {
+    public TedisConnection connection() {
+        tryAddChannel();
+        return new TedisConnection(pool.removeFirst());
+    }
+
+    public Pipeline pipeline() {
+        tryAddChannel();
+        return new Pipeline(pool.removeFirst());
+    }
+
+    private void tryAddChannel() {
         if (idleConns.get() == 0) {
             if (totalConns.get() >= maxConns) {
                 throw new ConnectFailException("Number of connection is exceeded");
             } else {
-                addConnection();
+                addChannel();
             }
         }
         activeConns.getAndIncrement();
         idleConns.getAndDecrement();
-        return pool.removeFirst();
     }
 
-    public void returnConn(Connection conn) {
+    public void returnToPool(Connection conn) {
         if (activeConns.get() >= coreConns) {
             conn.close();
             totalConns.getAndDecrement();
         } else {
-            pool.addLast(conn);
+            pool.addLast(conn.channel());
             idleConns.getAndIncrement();
         }
         activeConns.getAndDecrement();
@@ -68,8 +79,8 @@ public class TedisPool {
 
 
     public void close() {
-        for (Connection conn : pool) {
-            conn.close();
+        for (Channel chan : pool) {
+            chan.close();
         }
         activeConns.getAndSet(0);
         idleConns.getAndSet(0);

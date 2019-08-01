@@ -127,6 +127,18 @@ DEL key [key ...]
 
   使用eval命令：`EVAL script 1 key, LOCK_KEY, UNIQUE_CODE`
 
+  **为什么unlock需要原子性？**
+
+  考虑以下情形
+
+  1. A获取锁成功。
+  2. A访问共享资源。
+  3. A释放锁，先GET随机字符串的值并且与自己的值相等
+  4. A由于某个原因阻塞住了很长时间，或者网络出现很大延迟
+  5. 过期时间到了，锁自动释放了。
+  6. B获取到了对应同一个资源的锁。
+  7. A发送的`DEL`到达了服务器，释放掉了B持有的锁。
+
 * Unique Code
 
   Tedis采用的是Unix时间戳+host name+host address方式来实现

@@ -1,16 +1,16 @@
 package com.tedis.protocol;
 
-public class Response {
+public class Result {
     private int type;
     private String errorType;  // not null only when type == RESPData.ERROR_TYPE
     private String result;
 
-    public Response(int type, String result) {
+    public Result(int type, String result) {
         this.type = type;
         this.result = result;
     }
 
-    public Response(int type, String errorType, String result) {
+    public Result(int type, String errorType, String result) {
         this.type = type;
         this.errorType = errorType;
         this.result = result;
@@ -43,7 +43,7 @@ public class Response {
 
     @Override
     public String toString() {
-        return "Response{" +
+        return "Result{" +
                 "type=" + type +
                 ", errorType='" + errorType + '\'' +
                 ", result='" + result + '\'' +

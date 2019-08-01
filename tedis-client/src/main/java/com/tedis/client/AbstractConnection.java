@@ -12,27 +12,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractConnection implements Connection {
+public abstract class AbstractConnection<T> implements Connection<T> {
 
     final Channel channel;
-    public static final AttributeKey<TedisFuture<String>> KEY = AttributeKey.valueOf("future");
+    public static final AttributeKey<Integer> RESULT_NUM_KEY = AttributeKey.valueOf("result_num");
 
     AbstractConnection(Channel channel) {
         this.channel = channel;
     }
 
     @Override
-    public TedisFuture<String> ping(String msg) {
+    public TedisFuture<T> ping(String msg) {
         return execute(Cmd.PING, msg);
     }
 
     @Override
-    public TedisFuture<String> auth(String pass) {
+    public TedisFuture<T> auth(String pass) {
         return execute(Cmd.AUTH, pass);
     }
 
     @Override
-    public TedisFuture<String> set(String key, String value, String... optional) {
+    public TedisFuture<T> set(String key, String value, String... optional) {
         String[] params = new String[optional.length + 2];
         params[0] = key;
         params[1] = value;
@@ -41,27 +41,27 @@ public abstract class AbstractConnection implements Connection {
     }
 
     @Override
-    public TedisFuture<String> get(String key) {
+    public TedisFuture<T> get(String key) {
         return execute(Cmd.GET, key);
     }
 
     @Override
-    public TedisFuture<String> setnx(String key, String value) {
+    public TedisFuture<T> setnx(String key, String value) {
         return execute(Cmd.SETNX, key, value);
     }
 
     @Override
-    public TedisFuture<String> incr(String key) {
+    public TedisFuture<T> incr(String key) {
         return execute(Cmd.INCR, key);
     }
 
     @Override
-    public TedisFuture<String> del(String... keys) {
+    public TedisFuture<T> del(String... keys) {
         return execute(Cmd.DEL, keys);
     }
 
     @Override
-    public TedisFuture<String> hmset(String key, String... pairs) {
+    public TedisFuture<T> hmset(String key, String... pairs) {
         String[] params = new String[pairs.length + 1];
         params[0] = key;
         System.arraycopy(pairs, 0, params, 1, pairs.length);
@@ -69,7 +69,7 @@ public abstract class AbstractConnection implements Connection {
     }
 
     @Override
-    public TedisFuture<String> eval(String script, int numKeys, String... keys) {
+    public TedisFuture<T> eval(String script, int numKeys, String... keys) {
         String[] params = new String[2 + keys.length];
         params[0] = script;
         params[1] = String.valueOf(numKeys);
@@ -78,11 +78,21 @@ public abstract class AbstractConnection implements Connection {
     }
 
     @Override
-    public TedisFuture<String> ttl(String key) {
+    public TedisFuture<T> setbit(String key, long offset, int value) {
+        return execute(Cmd.SETBIT, key, String.valueOf(offset), String.valueOf(value));
+    }
+
+    @Override
+    public TedisFuture<T> getbit(String key, long offset) {
+        return execute(Cmd.GETBIT, key, String.valueOf(offset));
+    }
+
+    @Override
+    public TedisFuture<T> ttl(String key) {
         return execute(Cmd.TTL, key);
     }
 
-    abstract TedisFuture<String> execute(Cmd cmd, String... params);
+    abstract TedisFuture<T> execute(Cmd cmd, String... params);
 
     Command generateCmd(Cmd cmd, String... params) {
         String cmdName = cmd.getCmd();
@@ -103,6 +113,6 @@ public abstract class AbstractConnection implements Connection {
 
     @Override
     public void returnToPool(TedisPool pool) {
-        pool.returnConn(this);
+        pool.returnToPool(this);
     }
 }

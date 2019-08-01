@@ -1,8 +1,9 @@
-package com.tedis.locks;
+package com.tedis.tools.locks;
 
 import com.tedis.api.Connection;
 import com.tedis.api.Lock;
 import com.tedis.client.exception.IllegalLockOperation;
+import com.tedis.protocol.Result;
 import com.tedis.util.LuaScriptReader;
 import com.tedis.util.UniqueCodeGenerator;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ public class TedisLock implements Lock {
     static final String LOCK_KEY;
     private static String expireTime;
 
-    private Connection conn;
+    private Connection<Result> conn;
     private static final String UNIQUE_CODE;
     private UpdateExTimeTask task;
     private Thread updateThread;
@@ -28,11 +29,11 @@ public class TedisLock implements Lock {
     /**
      * default lock expire time: 3600 seconds
      */
-    public TedisLock(Connection conn) {
+    public TedisLock(Connection<Result> conn) {
         this(conn,3600);
     }
 
-    public TedisLock(Connection conn, int expireTime) {
+    public TedisLock(Connection<Result> conn, int expireTime) {
         this.conn = conn;
         task = new UpdateExTimeTask(conn);
         updateThread = new Thread(task);
@@ -42,8 +43,8 @@ public class TedisLock implements Lock {
     @Override
     public void lock() {
         while (true) {
-            String result = conn.set(LOCK_KEY, UNIQUE_CODE, "NX", "EX", expireTime).sync();
-            if (!result.equals("nil")) {
+            Result res = conn.set(LOCK_KEY, UNIQUE_CODE, "NX", "EX", expireTime).sync();
+            if (!res.getResult().equals("nil")) {
                 log.info(Thread.currentThread().getName() + " acquires lock success");
 //                updateThread.start();
                 break;

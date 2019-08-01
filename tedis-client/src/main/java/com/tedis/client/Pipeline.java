@@ -2,13 +2,13 @@ package com.tedis.client;
 
 import com.tedis.client.common.Cmd;
 import com.tedis.client.common.TedisFuture;
-import com.tedis.protocol.Command;
-import com.tedis.protocol.Commands;
-import com.tedis.protocol.Request;
+import com.tedis.protocol.*;
 import io.netty.channel.Channel;
+import io.netty.util.AttributeKey;
 
-public class Pipeline extends AbstractConnection {
+public class Pipeline extends AbstractConnection<Results> {
 
+    public static final AttributeKey<TedisFuture<Results>> FUTURE_KEY = AttributeKey.valueOf("future");
     private Commands cmds;
 
 
@@ -17,22 +17,24 @@ public class Pipeline extends AbstractConnection {
         cmds = new Commands();
     }
 
-//    public static Pipeline pipeline(Channel channel) {
-//        return new Pipeline(channel);
-//    }
-
     @Override
-    TedisFuture<String> execute(Cmd cmd, String... params) {
+    TedisFuture<Results> execute(Cmd cmd, String... params) {
         Command c = generateCmd(cmd, params);
         cmds.add(c);
         return null;
     }
 
-    public TedisFuture<String> submit() {
+    public TedisFuture<Results> submit() {
         Request<Commands> req = new Request<>(cmds);
-        TedisFuture<String> future = new TedisFuture<>();
-        channel.attr(KEY).set(future);
-        channel.writeAndFlush(req);
+        TedisFuture<Results> future = new TedisFuture<>();
+        channel.attr(FUTURE_KEY).set(future);
+        channel.attr(RESULT_NUM_KEY).set(cmds.getCmds().size());
+        try {
+            channel.writeAndFlush(req).sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        cmds.clear();
         return future;
     }
 

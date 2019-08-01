@@ -33,4 +33,8 @@ public class Commands {
         sb.append("}");
         return sb.toString();
     }
+
+    public void clear() {
+        cmds = new ArrayList<>();
+    }
 }

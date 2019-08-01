@@ -1,9 +1,10 @@
 package com.tedis.api;
 
 import com.tedis.client.exception.ConnectFailException;
+import io.netty.channel.Channel;
 
 public interface Client {
-    Connection connect() throws InterruptedException, ConnectFailException;
+    Channel connect() throws InterruptedException, ConnectFailException;
 
     void close();
 }

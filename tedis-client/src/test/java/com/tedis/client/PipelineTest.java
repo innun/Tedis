@@ -1,34 +1,47 @@
 package com.tedis.client;
 
-import com.tedis.api.Connection;
 import com.tedis.client.pool.TedisPool;
 import com.tedis.client.pool.TedisPoolConfig;
+import com.tedis.protocol.Result;
+import com.tedis.protocol.Results;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class PipelineTest {
 
-    TedisPool pool;
-    Connection conn;
+    static TedisPool pool;
+    static Pipeline p;
 
     @BeforeAll
-    public void before() {
+    public static void before() {
         pool = new TedisPool(TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
                 TedisClientConfig.DEFAULT_CONFIG);
-        conn = pool.getConn();
+        p = pool.pipeline();
     }
 
     @Test
     void submit() {
         try {
-            Pipeline p = new Pipeline(conn.channel());
             p.set("a", "1");
             p.set("b", "2");
             p.set("c", "3");
-            p.submit().sync();
-
+            Results results = p.submit().sync();
+            for (Result r : results.getResults()) {
+                assertEquals(r.getResult(), "\"OK\"");
+            }
+            p.get("a");
+            p.get("b");
+            p.get("c");
+            results = p.submit().sync();
+            int i = 1;
+            for (Result r : results.getResults()) {
+                assertEquals(r.getResult(), "\"" + i + "\"");
+                i++;
+            }
         } finally {
-            conn.returnToPool(pool);
+            p.returnToPool(pool);
         }
     }
 }

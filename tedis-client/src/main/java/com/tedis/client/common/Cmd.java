@@ -10,7 +10,9 @@ public enum Cmd {
     EVAL("EVAL"),
     TTL("TTL"),
     HMSET("HMSET"),
-    PING("PING");
+    PING("PING"),
+    SETBIT("SETBIT"),
+    GETBIT("GETBIT");
 
 
     private String cmd;

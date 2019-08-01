@@ -19,8 +19,8 @@ public class PipelineBenchmark {
         pool = new TedisPool(
                 TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
                 TedisClientConfig.DEFAULT_CONFIG);
-        conn1 = pool.getConn();
-        conn2 = pool.getConn();
+        conn1 = pool.pipeline();
+        conn2 = pool.pipeline();
         p = new Pipeline(conn2.channel());
     }
     @Test
