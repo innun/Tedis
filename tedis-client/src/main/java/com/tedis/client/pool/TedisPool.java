@@ -3,16 +3,19 @@ package com.tedis.client.pool;
 import com.tedis.api.Connection;
 import com.tedis.client.Pipeline;
 import com.tedis.client.TedisClient;
-import com.tedis.client.TedisClientConfig;
+import com.tedis.config.TedisClientConfig;
 import com.tedis.client.TedisConnection;
 import com.tedis.client.exception.ConnectFailException;
+import com.tedis.config.TedisPoolConfig;
 import io.netty.channel.Channel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TedisPool {
-
+    private static Logger log = LoggerFactory.getLogger(TedisPool.class);
     private AtomicInteger activeConns;
     private AtomicInteger idleConns;
     private AtomicInteger totalConns;
@@ -20,8 +23,22 @@ public class TedisPool {
     private final int maxConns;
     private TedisClient client;
     private ConcurrentLinkedDeque<Channel> pool;
+    private static volatile TedisPool instance;
 
-    public TedisPool(TedisPoolConfig tedisPoolConfig, TedisClientConfig tedisConfig) {
+    public static TedisPool pool() {
+        if (instance == null) {
+            synchronized(TedisPool.class) {
+                if (instance == null) {
+                    instance = new TedisPool(
+                            TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
+                            TedisClientConfig.DEFAULT_CONFIG);
+                }
+            }
+        }
+        return instance;
+    }
+
+    private TedisPool(TedisPoolConfig tedisPoolConfig, TedisClientConfig tedisConfig) {
         activeConns = new AtomicInteger(0);
         idleConns = new AtomicInteger(0);
         totalConns = new AtomicInteger(0);
@@ -46,12 +63,18 @@ public class TedisPool {
 
     public TedisConnection connection() {
         tryAddChannel();
-        return new TedisConnection(pool.removeFirst());
+        TedisConnection conn = new TedisConnection(pool.removeFirst());
+        idleConns.getAndDecrement();
+        activeConns.getAndIncrement();
+        return conn;
     }
 
     public Pipeline pipeline() {
         tryAddChannel();
-        return new Pipeline(pool.removeFirst());
+        Pipeline p =  new Pipeline(pool.removeFirst());
+        idleConns.getAndDecrement();
+        activeConns.getAndIncrement();
+        return p;
     }
 
     private void tryAddChannel() {
@@ -62,19 +85,40 @@ public class TedisPool {
                 addChannel();
             }
         }
-        activeConns.getAndIncrement();
-        idleConns.getAndDecrement();
     }
 
     public void returnToPool(Connection conn) {
-        if (activeConns.get() >= coreConns) {
+        if (totalConns.get() > coreConns) {
             conn.close();
+            activeConns.getAndDecrement();
             totalConns.getAndDecrement();
         } else {
-            pool.addLast(conn.channel());
-            idleConns.getAndIncrement();
+            if (validate(conn.channel())) {
+                pool.addLast(conn.channel());
+                idleConns.getAndIncrement();
+                activeConns.getAndDecrement();
+            } else {
+                totalConns.getAndDecrement();
+                log.info("channel {} invalid, add a new one to pool.", conn.channel());
+                addChannel();
+                activeConns.getAndDecrement();
+            }
         }
-        activeConns.getAndDecrement();
+    }
+
+    private boolean validate(Channel channel) {
+        TedisConnection conn = new TedisConnection(channel);
+        String result = conn.ping().sync().getResult();
+        if (!result.equals("\"PONG\"")) {
+            try {
+                channel.close().sync();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return false;
+        } else {
+            return true;
+        }
     }
 
 
@@ -86,5 +130,17 @@ public class TedisPool {
         idleConns.getAndSet(0);
         totalConns.getAndSet(0);
         client.close();
+    }
+
+    public AtomicInteger getActiveConns() {
+        return activeConns;
+    }
+
+    public AtomicInteger getIdleConns() {
+        return idleConns;
+    }
+
+    public AtomicInteger getTotalConns() {
+        return totalConns;
     }
 }

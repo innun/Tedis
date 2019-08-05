@@ -2,6 +2,7 @@ package com.tedis.client;
 
 import com.tedis.api.Client;
 import com.tedis.client.exception.ConnectFailException;
+import com.tedis.config.TedisClientConfig;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;

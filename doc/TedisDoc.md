@@ -22,12 +22,6 @@ Tedis is a redis client based on tcp & resp.
 
 #### Supported redis features:
 
-- [x] command with string
-- [x] command with list
-- [x] command with set
-- [x] command with hash
-- [x] command with zset
-
 - [x] pipeline
 - [ ] Lua script
 - [ ] SSL

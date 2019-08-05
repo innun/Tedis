@@ -22,7 +22,7 @@ public abstract class AbstractConnection<T> implements Connection<T> {
     }
 
     @Override
-    public TedisFuture<T> ping(String msg) {
+    public TedisFuture<T> ping(String... msg) {
         return execute(Cmd.PING, msg);
     }
 

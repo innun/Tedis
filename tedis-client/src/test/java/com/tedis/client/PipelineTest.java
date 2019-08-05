@@ -1,7 +1,6 @@
 package com.tedis.client;
 
 import com.tedis.client.pool.TedisPool;
-import com.tedis.client.pool.TedisPoolConfig;
 import com.tedis.protocol.Result;
 import com.tedis.protocol.Results;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,8 +15,7 @@ class PipelineTest {
 
     @BeforeAll
     public static void before() {
-        pool = new TedisPool(TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
-                TedisClientConfig.DEFAULT_CONFIG);
+        pool = TedisPool.pool();
         p = pool.pipeline();
     }
 

@@ -1,4 +1,4 @@
-package com.tedis.client.pool;
+package com.tedis.config;
 
 public class TedisPoolConfig {
     private int coreConns;

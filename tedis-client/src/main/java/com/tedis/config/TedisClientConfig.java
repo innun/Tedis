@@ -1,4 +1,4 @@
-package com.tedis.client;
+package com.tedis.config;
 
 import com.tedis.client.common.TedisURL;
 

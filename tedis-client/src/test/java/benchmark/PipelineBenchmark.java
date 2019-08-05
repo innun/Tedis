@@ -2,9 +2,7 @@ package benchmark;
 
 import com.tedis.api.Connection;
 import com.tedis.client.Pipeline;
-import com.tedis.client.TedisClientConfig;
 import com.tedis.client.pool.TedisPool;
-import com.tedis.client.pool.TedisPoolConfig;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -16,9 +14,7 @@ public class PipelineBenchmark {
 
     @BeforeAll
     public static void before() {
-        pool = new TedisPool(
-                TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
-                TedisClientConfig.DEFAULT_CONFIG);
+        pool = TedisPool.pool();
         conn1 = pool.pipeline();
         conn2 = pool.pipeline();
         p = new Pipeline(conn2.channel());

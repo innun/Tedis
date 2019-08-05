@@ -1,8 +1,6 @@
 package com.tedis.tools.locks;
 
-import com.tedis.client.TedisClientConfig;
 import com.tedis.client.pool.TedisPool;
-import com.tedis.client.pool.TedisPoolConfig;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -21,11 +19,8 @@ class TedisLockTest {
 
     @BeforeAll
     public static void before() {
-        A = new TedisPool(TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
-                TedisClientConfig.DEFAULT_CONFIG);
-
-        B = new TedisPool(TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
-                TedisClientConfig.DEFAULT_CONFIG);
+        A = TedisPool.pool();
+        B = TedisPool.pool();
         ClientA_Lock = new TedisLock(A.connection());
         ClientB_Lock = new TedisLock(B.connection());
     }

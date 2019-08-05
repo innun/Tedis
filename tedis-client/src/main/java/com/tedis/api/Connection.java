@@ -12,7 +12,7 @@ public interface Connection<T> {
      * @param msg message
      * @return pong if msg == null, otherwise msg
      */
-    TedisFuture<T> ping(String msg);
+    TedisFuture<T> ping(String... msg);
 
     /**
      * Redis command: AUTH password
@@ -78,11 +78,11 @@ public interface Connection<T> {
      *
      * @param script Lua 5.1 script
      * @param numKeys number of keys
-     * @param keys keys
+     * @param args keys
      * @return
      *
      */
-    TedisFuture<T> eval(String script, int numKeys, String... keys);
+    TedisFuture<T> eval(String script, int numKeys, String... args);
 
     /**
      * Redis command: SETBIT key offset value

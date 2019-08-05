@@ -1,11 +1,14 @@
 package com.tedis.tools;
 
 import com.tedis.client.Pipeline;
-import com.tedis.client.TedisClientConfig;
 import com.tedis.client.pool.TedisPool;
-import com.tedis.client.pool.TedisPoolConfig;
+import com.tedis.protocol.Result;
+import com.tedis.protocol.Results;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BloomFilter {
+    Logger log = LoggerFactory.getLogger(BloomFilter.class);
 
     private long size;
     private int hashFuncs;
@@ -18,10 +21,10 @@ public class BloomFilter {
         }
         this.size = optimalSize(insertions, falseProbability);
         this.hashFuncs = optimalHashFuncs(size, insertions);
-        TedisPool pool = new TedisPool(
-                TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
-                TedisClientConfig.DEFAULT_CONFIG);
+        TedisPool pool = TedisPool.pool();
         p = pool.pipeline();
+
+        log.info("BloomFilter init => size: {} hash functions: {}", size, hashFuncs);
     }
 
     /**
@@ -46,15 +49,27 @@ public class BloomFilter {
 
     public void add(String str) {
         long[] hashes = getHashes(str);
-        for (int i = 1; i < hashFuncs; i++) {
+        for (int i = 0; i < hashFuncs; i++) {
             long index = hashes[i] % size;
             p.setbit(BLOOM_FILTER, index, 1);
         }
-        p.submit();
+        p.submit().sync();
     }
 
-//    public boolean include(String str) {
-//    }
+    public boolean include(String str) {
+        long[] hashes = getHashes(str);
+        for (int i = 0; i < hashFuncs; i++) {
+            long index = hashes[i] % size;
+            p.getbit(BLOOM_FILTER, index);
+        }
+        Results results = p.submit().sync();
+        for (Result result : results) {
+            if (result.getResult().equals("0")) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private long[] getHashes(String str) {
         long[] hashes = new long[hashFuncs];
@@ -72,5 +87,11 @@ public class BloomFilter {
         return h;
     }
 
+    public long getSize() {
+        return size;
+    }
 
+    public int getHashFuncs() {
+        return hashFuncs;
+    }
 }
