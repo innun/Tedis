@@ -1,30 +1,31 @@
 package com.tedis.config;
 
 public class TedisPoolConfig {
+    public static final String PROP_PREFIX = "com.tedis.pool.";
     private int coreConns;
     private int maxConns;
 
-    public static final TedisPoolConfig DEFAULT_TEDIS_POOL_CONFIG =
-            new TedisPoolConfig(4, Integer.MAX_VALUE);
+    private TedisPoolConfig() {}
 
-    public TedisPoolConfig(int coreConns, int maxConns) {
-        this.coreConns = coreConns;
-        this.maxConns = maxConns;
+    public static TedisPoolConfig build() {
+        return new TedisPoolConfig();
+    }
+
+    public TedisPoolConfig coreConns(String coreConns) {
+        this.coreConns = Integer.parseInt(coreConns);
+        return this;
+    }
+
+    public TedisPoolConfig maxConns(String maxConns) {
+        this.maxConns = Integer.parseInt(maxConns);
+        return this;
     }
 
     public int getCoreConns() {
         return coreConns;
     }
 
-    public void setCoreConns(int coreConns) {
-        this.coreConns = coreConns;
-    }
-
     public int getMaxConns() {
         return maxConns;
-    }
-
-    public void setMaxConns(int maxConns) {
-        this.maxConns = maxConns;
     }
 }

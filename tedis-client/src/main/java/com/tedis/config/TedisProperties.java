@@ -125,12 +125,4 @@ public class TedisProperties {
     public HashMap<String, String> getProperties() {
         return properties;
     }
-
-    public static void main(String[] args) {
-        TedisProperties p = new TedisProperties();
-        Set<Map.Entry<String, String>> set = p.getProperties().entrySet();
-        for (Map.Entry<String, String> e : set) {
-            System.out.println(e.getKey() + " " + e.getValue());
-        }
-    }
 }

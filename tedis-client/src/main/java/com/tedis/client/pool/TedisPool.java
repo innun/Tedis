@@ -3,14 +3,19 @@ package com.tedis.client.pool;
 import com.tedis.api.Connection;
 import com.tedis.client.Pipeline;
 import com.tedis.client.TedisClient;
-import com.tedis.config.TedisClientConfig;
 import com.tedis.client.TedisConnection;
 import com.tedis.client.exception.ConnectFailException;
+import com.tedis.config.TedisClientConfig;
 import com.tedis.config.TedisPoolConfig;
+import com.tedis.config.TedisProperties;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -19,7 +24,9 @@ public class TedisPool {
     private AtomicInteger activeConns;
     private AtomicInteger idleConns;
     private AtomicInteger totalConns;
+    // com.tedis.pool.coreConns
     private final int coreConns;
+    // com.tedis.pool.maxConns
     private final int maxConns;
     private TedisClient client;
     private ConcurrentLinkedDeque<Channel> pool;
@@ -27,11 +34,28 @@ public class TedisPool {
 
     public static TedisPool pool() {
         if (instance == null) {
-            synchronized(TedisPool.class) {
+            synchronized (TedisPool.class) {
                 if (instance == null) {
-                    instance = new TedisPool(
-                            TedisPoolConfig.DEFAULT_TEDIS_POOL_CONFIG,
-                            TedisClientConfig.DEFAULT_CONFIG);
+                    HashMap<String, String> properties = new TedisProperties().getProperties();
+                    TedisPoolConfig poolConf = TedisPoolConfig.build();
+                    TedisClientConfig clientConf = TedisClientConfig.build();
+                    Set<String> keySet = properties.keySet();
+                    try {
+                        for (String key : keySet) {
+                            if (key.startsWith(TedisPoolConfig.PROP_PREFIX)) {
+                                String name = key.substring(TedisPoolConfig.PROP_PREFIX.length());
+                                Method method = TedisPoolConfig.class.getDeclaredMethod(name, String.class);
+                                method.invoke(poolConf, properties.get(key));
+                            } else if (key.startsWith(TedisClientConfig.PROP_PREFIX)) {
+                                String name = key.substring(TedisClientConfig.PROP_PREFIX.length());
+                                Method method = TedisClientConfig.class.getDeclaredMethod(name, String.class);
+                                method.invoke(clientConf, properties.get(key));
+                            }
+                        }
+                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    instance = new TedisPool(poolConf, clientConf);
                 }
             }
         }
@@ -71,7 +95,7 @@ public class TedisPool {
 
     public Pipeline pipeline() {
         tryAddChannel();
-        Pipeline p =  new Pipeline(pool.removeFirst());
+        Pipeline p = new Pipeline(pool.removeFirst());
         idleConns.getAndDecrement();
         activeConns.getAndIncrement();
         return p;

@@ -3,16 +3,11 @@ package com.tedis.config;
 import com.tedis.client.common.TedisURL;
 
 public class TedisClientConfig {
+    public static final String PROP_PREFIX = "com.tedis.client.";
     private TedisURL tedisURL;
     private String password;
-    public static final TedisClientConfig DEFAULT_CONFIG = new TedisClientConfig("redis://47.103.2.229:6379", "980608");
 
     private TedisClientConfig() {}
-
-    private TedisClientConfig(String url, String password) {
-        tedisURL = new TedisURL(url);
-        this.password = password;
-    }
 
     public static TedisClientConfig build() {
         return new TedisClientConfig();
@@ -21,6 +16,11 @@ public class TedisClientConfig {
 
     public TedisClientConfig password(String password) {
         this.password = password;
+        return this;
+    }
+
+    public TedisClientConfig url(String url) {
+        this.tedisURL = new TedisURL(url);
         return this;
     }
 
@@ -36,7 +36,4 @@ public class TedisClientConfig {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
