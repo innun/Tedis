@@ -8,6 +8,7 @@ import com.tedis.client.exception.ConnectFailException;
 import com.tedis.config.TedisClientConfig;
 import com.tedis.config.TedisPoolConfig;
 import com.tedis.config.TedisProperties;
+import com.tedis.protocol.Results;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,29 @@ public class TedisPool {
     private TedisClient client;
     private ConcurrentLinkedDeque<Channel> pool;
     private static volatile TedisPool instance;
+
+    private TedisPool(TedisPoolConfig tedisPoolConfig, TedisClientConfig tedisConfig) {
+        activeConns = new AtomicInteger(0);
+        idleConns = new AtomicInteger(0);
+        totalConns = new AtomicInteger(0);
+        this.client = TedisClient.create(tedisConfig);
+        this.coreConns = tedisPoolConfig.getCoreConns();
+        this.maxConns = tedisPoolConfig.getMaxConns();
+        pool = new ConcurrentLinkedDeque<>();
+        initPool();
+    }
+
+    private void initPool() {
+        for (int i = 0; i < coreConns; i++) {
+            addChannel();
+        }
+    }
+
+    private void addChannel() {
+        pool.add(client.connect());
+        idleConns.getAndIncrement();
+        totalConns.getAndIncrement();
+    }
 
     public static TedisPool pool() {
         if (instance == null) {
@@ -62,42 +86,27 @@ public class TedisPool {
         return instance;
     }
 
-    private TedisPool(TedisPoolConfig tedisPoolConfig, TedisClientConfig tedisConfig) {
-        activeConns = new AtomicInteger(0);
-        idleConns = new AtomicInteger(0);
-        totalConns = new AtomicInteger(0);
-        this.client = TedisClient.create(tedisConfig);
-        this.coreConns = tedisPoolConfig.getCoreConns();
-        this.maxConns = tedisPoolConfig.getMaxConns();
-        pool = new ConcurrentLinkedDeque<>();
-        initPool();
-    }
-
-    private void initPool() {
-        for (int i = 0; i < coreConns; i++) {
-            addChannel();
-        }
-    }
-
-    private void addChannel() {
-        pool.add(client.connect());
-        idleConns.getAndIncrement();
-        totalConns.getAndIncrement();
-    }
-
     public TedisConnection connection() {
         tryAddChannel();
-        TedisConnection conn = new TedisConnection(pool.removeFirst());
+        TedisConnection conn = new TedisConnection(pool.removeFirst(), this);
         idleConns.getAndDecrement();
         activeConns.getAndIncrement();
+        if (!conn.auth(client.getPassword()).sync().getResult().equals("\"OK\"")) {
+            throw new ConnectFailException("invalid password");
+        }
         return conn;
     }
 
     public Pipeline pipeline() {
         tryAddChannel();
-        Pipeline p = new Pipeline(pool.removeFirst());
+        Pipeline p = new Pipeline(pool.removeFirst(), this);
         idleConns.getAndDecrement();
         activeConns.getAndIncrement();
+        p.auth(client.getPassword());
+        Results r = p.submit().sync();
+        if (!r.getResults().get(0).getResult().equals("\"OK\"")) {
+            throw new ConnectFailException("invalid password");
+        }
         return p;
     }
 
@@ -111,7 +120,7 @@ public class TedisPool {
         }
     }
 
-    public void returnToPool(Connection conn) {
+    public void receive(Connection conn) {
         if (totalConns.get() > coreConns) {
             conn.close();
             activeConns.getAndDecrement();
@@ -131,7 +140,7 @@ public class TedisPool {
     }
 
     private boolean validate(Channel channel) {
-        TedisConnection conn = new TedisConnection(channel);
+        TedisConnection conn = new TedisConnection(channel, this);
         String result = conn.ping().sync().getResult();
         if (!result.equals("\"PONG\"")) {
             try {

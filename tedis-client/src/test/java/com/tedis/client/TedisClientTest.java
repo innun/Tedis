@@ -24,8 +24,8 @@ public class TedisClientTest {
         assertEquals(conn1.get("TEST").sync().getResult(), "\"1\"");
 
         } finally {
-            conn1.returnToPool(pool);
-            conn2.returnToPool(pool);
+            conn1.returnToPool();
+            conn2.returnToPool();
         }
     }
 }

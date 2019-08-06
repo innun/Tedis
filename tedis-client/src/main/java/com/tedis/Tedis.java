@@ -6,6 +6,8 @@ import com.tedis.client.TedisConnection;
 import com.tedis.client.common.TedisFuture;
 import com.tedis.client.pool.TedisPool;
 import com.tedis.protocol.Results;
+import com.tedis.tools.BloomFilter;
+import com.tedis.tools.locks.TedisLock;
 
 public class Tedis implements Command {
     public static final int TRADITIONAL = 0;
@@ -21,20 +23,20 @@ public class Tedis implements Command {
     }
 
     private void init() {
-        mode = Tedis.TRADITIONAL;
         pool = TedisPool.pool();
+        setMode(Tedis.TRADITIONAL);
     }
 
     public void setMode(int mode) {
         this.mode = mode;
         if (mode == Tedis.PIPELINE) {
             if (c != null) {
-                pool.returnToPool(c);
+                pool.receive(c);
             }
             p = pool.pipeline();
         } else if (mode == Tedis.TRADITIONAL) {
             if (p != null) {
-                pool.returnToPool(p);
+                pool.receive(p);
             }
             c = pool.connection();
         }
@@ -125,5 +127,19 @@ public class Tedis implements Command {
             p.close();
         }
         pool.close();
+    }
+
+    //***************************tools**************************
+    public TedisLock newLock() {
+        return newLock(3600);
+    }
+
+    public TedisLock newLock(int expireTime) {
+        return new TedisLock(c, expireTime);
+    }
+
+    public BloomFilter newBloomFilter(long insertions, double falseProbability) {
+        setMode(Tedis.PIPELINE);
+        return new BloomFilter(insertions, falseProbability, p);
     }
 }

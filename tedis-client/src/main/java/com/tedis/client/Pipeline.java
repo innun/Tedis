@@ -2,7 +2,11 @@ package com.tedis.client;
 
 import com.tedis.client.common.Cmd;
 import com.tedis.client.common.TedisFuture;
-import com.tedis.protocol.*;
+import com.tedis.client.pool.TedisPool;
+import com.tedis.protocol.Command;
+import com.tedis.protocol.Commands;
+import com.tedis.protocol.Request;
+import com.tedis.protocol.Results;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 
@@ -12,8 +16,8 @@ public class Pipeline extends AbstractConnection<Results> {
     private Commands cmds;
 
 
-    public Pipeline(Channel channel) {
-        super(channel);
+    public Pipeline(Channel channel, TedisPool pool) {
+        super(channel, pool);
         cmds = new Commands();
     }
 

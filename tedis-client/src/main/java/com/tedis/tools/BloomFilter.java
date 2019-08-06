@@ -1,7 +1,6 @@
 package com.tedis.tools;
 
 import com.tedis.client.Pipeline;
-import com.tedis.client.pool.TedisPool;
 import com.tedis.protocol.Result;
 import com.tedis.protocol.Results;
 import org.slf4j.Logger;
@@ -13,17 +12,15 @@ public class BloomFilter {
     private long size;
     private int hashFuncs;
     private static final String BLOOM_FILTER = "BLOOMFILTER";
-    private static Pipeline p;
+    private Pipeline p;
 
-    public BloomFilter(long insertions, double falseProbability) {
+    public BloomFilter(long insertions, double falseProbability, Pipeline p) {
         if (falseProbability <= 0 || falseProbability > 1 || insertions < 0) {
             throw new IllegalArgumentException("illegal argument");
         }
         this.size = optimalSize(insertions, falseProbability);
         this.hashFuncs = optimalHashFuncs(size, insertions);
-        TedisPool pool = TedisPool.pool();
-        p = pool.pipeline();
-
+        this.p = p;
         log.info("BloomFilter init => size: {} hash functions: {}", size, hashFuncs);
     }
 
@@ -93,5 +90,9 @@ public class BloomFilter {
 
     public int getHashFuncs() {
         return hashFuncs;
+    }
+
+    public void close() {
+        this.p.returnToPool();
     }
 }

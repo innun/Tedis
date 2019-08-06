@@ -1,6 +1,6 @@
 package com.tedis.tools.locks;
 
-import com.tedis.client.pool.TedisPool;
+import com.tedis.Tedis;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,17 +12,14 @@ class TedisLockTest {
     private int v2 = 0;
     private static TedisLock ClientA_Lock;
     private static TedisLock ClientB_Lock;
-    // Client A
-    private static TedisPool A;
-    // Client B
-    private static TedisPool B;
+    private static Tedis tedis;
+
 
     @BeforeAll
     public static void before() {
-        A = TedisPool.pool();
-        B = TedisPool.pool();
-        ClientA_Lock = new TedisLock(A.connection());
-        ClientB_Lock = new TedisLock(B.connection());
+        tedis = new Tedis();
+        ClientA_Lock = tedis.newLock();
+        ClientB_Lock = tedis.newLock();
     }
 
     @Test
@@ -98,8 +95,8 @@ class TedisLockTest {
 
     @Test
     public void updateExTimeTest() throws InterruptedException {
-        TedisLock lock1 = new TedisLock(A.connection(), 10);
-        TedisLock lock2 = new TedisLock(B.connection(),10);
+        TedisLock lock1 = tedis.newLock();
+        TedisLock lock2 = tedis.newLock();
         Thread thread1 = new Thread(() -> {
             try {
                 lock1.lock();

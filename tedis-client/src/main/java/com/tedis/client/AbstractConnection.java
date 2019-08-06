@@ -15,10 +15,12 @@ import java.util.List;
 public abstract class AbstractConnection<T> implements Connection<T> {
 
     final Channel channel;
+    private TedisPool pool;
     public static final AttributeKey<Integer> RESULT_NUM_KEY = AttributeKey.valueOf("result_num");
 
-    AbstractConnection(Channel channel) {
+    AbstractConnection(Channel channel, TedisPool pool) {
         this.channel = channel;
+        this.pool = pool;
     }
 
     @Override
@@ -112,7 +114,7 @@ public abstract class AbstractConnection<T> implements Connection<T> {
     }
 
     @Override
-    public void returnToPool(TedisPool pool) {
-        pool.returnToPool(this);
+    public void returnToPool() {
+        this.pool.receive(this);
     }
 }

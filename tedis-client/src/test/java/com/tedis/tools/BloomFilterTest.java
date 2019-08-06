@@ -1,5 +1,6 @@
 package com.tedis.tools;
 
+import com.tedis.Tedis;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,9 +10,10 @@ class BloomFilterTest {
 
     @Test
     public void bloomfilterTest() {
-        BloomFilter bf = new BloomFilter(1000, 0.001);
-        bf.add("Hello World");
-        assertTrue(bf.include("Hello World"));
-        assertFalse(bf.include("HelloWorld"));
+        Tedis tedis = new Tedis();
+        BloomFilter bf = tedis.newBloomFilter(1000, 0.1);
+        bf.add("HELLO WORLD");
+        assertTrue(bf.include("HELLO WORLD"));
+        assertFalse(bf.include("HELLO WORLd"));
     }
 }

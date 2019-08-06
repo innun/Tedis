@@ -15,9 +15,8 @@ public class PipelineBenchmark {
     @BeforeAll
     public static void before() {
         pool = TedisPool.pool();
-        conn1 = pool.pipeline();
-        conn2 = pool.pipeline();
-        p = new Pipeline(conn2.channel());
+        conn1 = pool.connection();
+        p = pool.pipeline();
     }
     @Test
     public void benchmark() {

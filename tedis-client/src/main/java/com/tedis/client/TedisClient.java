@@ -50,17 +50,12 @@ public final class TedisClient implements Client {
 
     @Override
     public Channel connect() throws ConnectFailException {
-        TedisConnection conn;
         ChannelFuture f;
         try {
             f = bootstrap.connect(host, port).sync();
             channel = f.channel();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        conn = new TedisConnection(channel);
-        if (!conn.auth(password).sync().getResult().equals("\"OK\"")) {
-            throw new ConnectFailException("invalid password");
         }
         return channel;
     }
@@ -73,5 +68,9 @@ public final class TedisClient implements Client {
     public void close() {
         channel.close();
         log.info("connection => {} now closed", channel);
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

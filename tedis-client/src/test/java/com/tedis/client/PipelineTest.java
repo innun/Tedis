@@ -39,7 +39,7 @@ class PipelineTest {
                 i++;
             }
         } finally {
-            p.returnToPool(pool);
+            p.returnToPool();
         }
     }
 }

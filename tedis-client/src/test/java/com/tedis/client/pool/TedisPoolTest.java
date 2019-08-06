@@ -32,11 +32,11 @@ class TedisPoolTest {
             assertEquals(pool.getIdleConns().get(), 0);
             assertEquals(pool.getTotalConns().get(), 5);
         } finally {
-            pool.returnToPool(conn1);
-            pool.returnToPool(conn2);
-            pool.returnToPool(conn3);
-            pool.returnToPool(conn4);
-            pool.returnToPool(conn5);
+            pool.receive(conn1);
+            pool.receive(conn2);
+            pool.receive(conn3);
+            pool.receive(conn4);
+            pool.receive(conn5);
             assertEquals(pool.getActiveConns().get(), 0);
             assertEquals(pool.getIdleConns().get(), 4);
             assertEquals(pool.getTotalConns().get(), 4);
