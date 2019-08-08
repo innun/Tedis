@@ -1,36 +1,29 @@
-package com.tedis.client;
+package com.tedis.client.connection;
 
-import com.tedis.api.Connection;
 import com.tedis.client.common.Cmd;
 import com.tedis.client.common.TedisFuture;
-import com.tedis.client.pool.TedisPool;
+import com.tedis.client.pool.ConnPool;
 import com.tedis.protocol.Command;
 import io.netty.channel.Channel;
-import io.netty.util.AttributeKey;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractConnection<T> implements Connection<T> {
+public abstract class AbstractCommonConn<T> extends AbstractBaseConn<T> implements CommonCmd<T> {
 
-    final Channel channel;
-    private TedisPool pool;
-    public static final AttributeKey<Integer> RESULT_NUM_KEY = AttributeKey.valueOf("result_num");
-
-    AbstractConnection(Channel channel, TedisPool pool) {
-        this.channel = channel;
-        this.pool = pool;
+    public AbstractCommonConn(ConnPool pool, Channel channel) {
+        super(pool, channel);
     }
 
     @Override
     public TedisFuture<T> ping(String... msg) {
-        return execute(Cmd.PING, msg);
+        return send(Cmd.PING, msg);
     }
 
     @Override
     public TedisFuture<T> auth(String pass) {
-        return execute(Cmd.AUTH, pass);
+        return send(Cmd.AUTH, pass);
     }
 
     @Override
@@ -39,27 +32,27 @@ public abstract class AbstractConnection<T> implements Connection<T> {
         params[0] = key;
         params[1] = value;
         System.arraycopy(optional, 0, params, 2, params.length - 2);
-        return execute(Cmd.SET, params);
+        return send(Cmd.SET, params);
     }
 
     @Override
     public TedisFuture<T> get(String key) {
-        return execute(Cmd.GET, key);
+        return send(Cmd.GET, key);
     }
 
     @Override
     public TedisFuture<T> setnx(String key, String value) {
-        return execute(Cmd.SETNX, key, value);
+        return send(Cmd.SETNX, key, value);
     }
 
     @Override
     public TedisFuture<T> incr(String key) {
-        return execute(Cmd.INCR, key);
+        return send(Cmd.INCR, key);
     }
 
     @Override
     public TedisFuture<T> del(String... keys) {
-        return execute(Cmd.DEL, keys);
+        return send(Cmd.DEL, keys);
     }
 
     @Override
@@ -67,7 +60,7 @@ public abstract class AbstractConnection<T> implements Connection<T> {
         String[] params = new String[pairs.length + 1];
         params[0] = key;
         System.arraycopy(pairs, 0, params, 1, pairs.length);
-        return execute(Cmd.HMSET, params);
+        return send(Cmd.HMSET, params);
     }
 
     @Override
@@ -76,45 +69,39 @@ public abstract class AbstractConnection<T> implements Connection<T> {
         params[0] = script;
         params[1] = String.valueOf(numKeys);
         System.arraycopy(keys,0, params, 2, params.length - 2);
-        return execute(Cmd.EVAL, params);
+        return send(Cmd.EVAL, params);
     }
 
     @Override
     public TedisFuture<T> setbit(String key, long offset, int value) {
-        return execute(Cmd.SETBIT, key, String.valueOf(offset), String.valueOf(value));
+        return send(Cmd.SETBIT, key, String.valueOf(offset), String.valueOf(value));
     }
 
     @Override
     public TedisFuture<T> getbit(String key, long offset) {
-        return execute(Cmd.GETBIT, key, String.valueOf(offset));
+        return send(Cmd.GETBIT, key, String.valueOf(offset));
     }
 
     @Override
     public TedisFuture<T> ttl(String key) {
-        return execute(Cmd.TTL, key);
+        return send(Cmd.TTL, key);
     }
 
-    abstract TedisFuture<T> execute(Cmd cmd, String... params);
+    @Override
+    public TedisFuture<T> publish(String channel, String msg) {
+        return send(Cmd.PUBLISH, msg);
+    }
 
+    @Override
+    public TedisFuture<T> pubsub(String subcommand, String... args) {
+        return send(Cmd.PUBSUB, (String[]) Arrays.asList(subcommand, args).toArray());
+    }
+    
     Command generateCmd(Cmd cmd, String... params) {
         String cmdName = cmd.getCmd();
         List<String> parts = new ArrayList<>();
         parts.add(cmdName);
         parts.addAll(Arrays.asList(params));
         return new Command(parts);
-    }
-
-    public Channel channel() {
-        return channel;
-    }
-
-    @Override
-    public void close() {
-        channel.close();
-    }
-
-    @Override
-    public void returnToPool() {
-        this.pool.receive(this);
     }
 }

@@ -1,6 +1,5 @@
 package com.tedis.client;
 
-import com.tedis.api.Client;
 import com.tedis.client.exception.ConnectFailException;
 import com.tedis.config.TedisClientConfig;
 import io.netty.bootstrap.Bootstrap;
@@ -13,9 +12,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class TedisClient implements Client {
+public final class DefaultClient implements com.tedis.api.Client {
 
-    private static Logger log = LoggerFactory.getLogger(TedisClient.class);
+    private static Logger log = LoggerFactory.getLogger(DefaultClient.class);
 
     private EventLoopGroup eventLoopGroup;
     private Bootstrap bootstrap;
@@ -25,7 +24,7 @@ public final class TedisClient implements Client {
     private String password;
 
 
-    private TedisClient() {
+    private DefaultClient() {
         init();
     }
 
@@ -38,8 +37,8 @@ public final class TedisClient implements Client {
                 .option(ChannelOption.TCP_NODELAY, true);
     }
 
-    public static TedisClient create(TedisClientConfig config) {
-        TedisClient instance = new TedisClient();
+    public static DefaultClient create(TedisClientConfig config) {
+        DefaultClient instance = new DefaultClient();
         instance.host = config.getHost();
         instance.port = config.getPort();
         instance.password = config.getPassword();

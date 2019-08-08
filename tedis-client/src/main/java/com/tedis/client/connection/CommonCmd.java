@@ -1,8 +1,8 @@
-package com.tedis.api;
+package com.tedis.client.connection;
 
 import com.tedis.client.common.TedisFuture;
 
-public interface Command<T> {
+public interface CommonCmd<T> {
     /**
      * PING [message]
      * @param msg message
@@ -92,6 +92,7 @@ public interface Command<T> {
 
     /**
      * Redis command: GETBIT key offset
+     *
      * @param key bitmap key
      * @param offset offset
      * @return bit value stored at offset
@@ -107,4 +108,22 @@ public interface Command<T> {
      *         -2 if the key does not exist.
      */
     TedisFuture<T> ttl(String key);
+
+    /**
+     * Redis command: PUBLISH channel message
+     *
+     * @param channel channel to send message
+     * @param msg message
+     * @return
+     */
+    TedisFuture<T> publish(String channel, String msg);
+
+    /**
+     * Reedis command: PUBSUB subcommand [argument [argument ...]]
+     *
+     * @param subcommand subcommand
+     * @param args args
+     * @return result
+     */
+    TedisFuture<T> pubsub(String subcommand, String... args);
 }

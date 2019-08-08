@@ -1,18 +1,18 @@
 package com.tedis.client.pool;
 
-import com.tedis.api.Connection;
+import com.tedis.client.connection.Connection;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TedisPoolTest {
-    private static TedisPool pool;
+class TedisClientPoolTest {
+    private static ConnPool pool;
 
 
 
     @Test
     public void connectionTest() {
-        pool = TedisPool.pool();
+        pool = ConnPool.pool();
 
         Connection conn1 = null;
         Connection conn2 = null;
@@ -32,11 +32,11 @@ class TedisPoolTest {
             assertEquals(pool.getIdleConns().get(), 0);
             assertEquals(pool.getTotalConns().get(), 5);
         } finally {
-            pool.receive(conn1);
-            pool.receive(conn2);
-            pool.receive(conn3);
-            pool.receive(conn4);
-            pool.receive(conn5);
+            pool.recycle(conn1);
+            pool.recycle(conn2);
+            pool.recycle(conn3);
+            pool.recycle(conn4);
+            pool.recycle(conn5);
             assertEquals(pool.getActiveConns().get(), 0);
             assertEquals(pool.getIdleConns().get(), 4);
             assertEquals(pool.getTotalConns().get(), 4);

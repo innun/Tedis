@@ -1,6 +1,6 @@
 package com.tedis.tools.locks;
 
-import com.tedis.api.Connection;
+import com.tedis.client.connection.Connection;
 import com.tedis.api.Lock;
 import com.tedis.client.exception.IllegalLockOperation;
 import com.tedis.protocol.Result;

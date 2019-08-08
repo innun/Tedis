@@ -1,7 +1,7 @@
 package com.tedis.client.handler;
 
-import com.tedis.client.Pipeline;
-import com.tedis.client.TedisConnection;
+import com.tedis.client.connection.Pipeline;
+import com.tedis.client.connection.TraditionalConn;
 import com.tedis.client.common.TedisFuture;
 import com.tedis.protocol.Result;
 import com.tedis.protocol.Results;
@@ -25,7 +25,7 @@ public class TedisChannelInBoundHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object obj) {
         Channel channel = ctx.channel();
         if (obj instanceof Result) {
-            TedisFuture<Result> future = channel.attr(TedisConnection.FUTURE_KEY).get();
+            TedisFuture<Result> future = channel.attr(TraditionalConn.FUTURE_KEY).get();
             future.complete((Result) obj);
         }
         if (obj instanceof Results) {

@@ -1,18 +1,18 @@
 package com.tedis.client;
 
-import com.tedis.api.Connection;
-import com.tedis.client.pool.TedisPool;
+import com.tedis.client.connection.Connection;
+import com.tedis.client.pool.ConnPool;
 import com.tedis.protocol.Result;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TedisClientTest {
+public class DefaultClientTest {
 
     @Test
     public void clientTest() throws InterruptedException {
 
-        TedisPool pool = TedisPool.pool();
+        ConnPool pool = ConnPool.pool();
         Connection<Result> conn1 = null;
         Connection<Result> conn2 = null;
         try {
@@ -24,8 +24,8 @@ public class TedisClientTest {
         assertEquals(conn1.get("TEST").sync().getResult(), "\"1\"");
 
         } finally {
-            conn1.returnToPool();
-            conn2.returnToPool();
+            conn1.recycle();
+            conn2.recycle();
         }
     }
 }

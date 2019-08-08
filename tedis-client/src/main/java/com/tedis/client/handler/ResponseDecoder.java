@@ -1,6 +1,6 @@
 package com.tedis.client.handler;
 
-import com.tedis.client.AbstractConnection;
+import com.tedis.client.connection.AbstractCommonConn;
 import com.tedis.protocol.RESPData;
 import com.tedis.protocol.Result;
 import com.tedis.protocol.Results;
@@ -26,7 +26,7 @@ public class ResponseDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
         Channel channel = ctx.channel();
-        int resultNum = channel.attr(AbstractConnection.RESULT_NUM_KEY).get();
+        int resultNum = channel.attr(AbstractCommonConn.RESULT_KEY).get();
         if (resultNum == -1) {
             decodeResult(in, out);
         } else {

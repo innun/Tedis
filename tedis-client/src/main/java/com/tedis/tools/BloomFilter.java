@@ -1,6 +1,6 @@
 package com.tedis.tools;
 
-import com.tedis.client.Pipeline;
+import com.tedis.client.connection.Pipeline;
 import com.tedis.protocol.Result;
 import com.tedis.protocol.Results;
 import org.slf4j.Logger;
@@ -93,6 +93,6 @@ public class BloomFilter {
     }
 
     public void close() {
-        this.p.returnToPool();
+        this.p.recycle();
     }
 }

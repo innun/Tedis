@@ -1,56 +1,75 @@
 package com.tedis;
 
-import com.tedis.api.Command;
-import com.tedis.client.Pipeline;
-import com.tedis.client.TedisConnection;
+import com.tedis.api.Tedis;
+import com.tedis.client.connection.Pipeline;
+import com.tedis.client.connection.TraditionalConn;
 import com.tedis.client.common.TedisFuture;
-import com.tedis.client.pool.TedisPool;
+import com.tedis.client.pool.ConnPool;
+import com.tedis.client.proxy.TedisInvocationHandler;
 import com.tedis.protocol.Results;
 import com.tedis.tools.BloomFilter;
 import com.tedis.tools.locks.TedisLock;
 
-public class Tedis implements Command {
-    public static final int TRADITIONAL = 0;
-    public static final int PIPELINE = 1;
+import java.lang.reflect.Proxy;
 
-    private TedisPool pool;
+public class TedisClient implements Tedis {
+    public static final int TRADITIONAL = 1;
+    public static final int PIPELINE = 1 << 1;
+    public static final int SUB = 1 << 2;
+
+    private ConnPool pool;
     private int mode;
     private Pipeline p;
-    private TedisConnection c;
+    private TraditionalConn c;
 
-    public Tedis() {
+    private TedisClient() {
         init();
     }
 
     private void init() {
-        pool = TedisPool.pool();
-        setMode(Tedis.TRADITIONAL);
+        pool = ConnPool.pool();
+        setMode(TedisClient.TRADITIONAL);
     }
 
+    public static Tedis tedis() {
+        TedisClient tedisClient = new TedisClient();
+        return (Tedis) Proxy.newProxyInstance(
+                TedisClient.class.getClassLoader(),
+                TedisClient.class.getInterfaces(),
+                new TedisInvocationHandler(tedisClient));
+    }
+
+    @Override
     public void setMode(int mode) {
         this.mode = mode;
-        if (mode == Tedis.PIPELINE) {
+        if (mode == TedisClient.PIPELINE) {
             if (c != null) {
-                pool.receive(c);
+                pool.recycle(c);
             }
             p = pool.pipeline();
-        } else if (mode == Tedis.TRADITIONAL) {
+        } else if (mode == TedisClient.TRADITIONAL || mode == TedisClient.SUB) {
             if (p != null) {
-                pool.receive(p);
+                pool.recycle(p);
             }
             c = pool.connection();
         }
     }
 
+    @Override
+    public int getMode() {
+        return mode;
+    }
+
+    @Override
     public TedisFuture<Results> submit() {
-        if (mode != Tedis.PIPELINE) {
-            throw new RuntimeException("tedis's mode is not pipeline");
+        if (mode != TedisClient.PIPELINE) {
+            throw new RuntimeException("Mode is not pipeline");
         }
         return p.submit();
     }
 
     private boolean traditional() {
-        return mode == Tedis.TRADITIONAL;
+        return mode == TedisClient.TRADITIONAL;
     }
 
     @Override
@@ -119,6 +138,7 @@ public class Tedis implements Command {
         return traditional() ? c.ttl(key) : p.ttl(key);
     }
 
+    @Override
     public void close() {
         if (c != null) {
             c.close();
@@ -130,16 +150,56 @@ public class Tedis implements Command {
     }
 
     //***************************tools**************************
+    @Override
     public TedisLock newLock() {
         return newLock(3600);
     }
 
+    @Override
     public TedisLock newLock(int expireTime) {
         return new TedisLock(c, expireTime);
     }
 
+    @Override
     public BloomFilter newBloomFilter(long insertions, double falseProbability) {
-        setMode(Tedis.PIPELINE);
+        setMode(TedisClient.PIPELINE);
         return new BloomFilter(insertions, falseProbability, p);
     }
+
+
+    //==============================SUB/PUB=================================
+    @Override
+    public TedisFuture subscribe(String... channels) {
+        setMode(TedisClient.SUB);
+        return c.subscribe(channels);
+    }
+
+    @Override
+    public TedisFuture unsubscribe(String... channels) {
+        setMode(TedisClient.TRADITIONAL);
+        return c.unsubscribe(channels);
+    }
+
+    @Override
+    public TedisFuture psubscribe(String... patterns) {
+        setMode(TedisClient.SUB);
+        return c.psubscribe(patterns);
+    }
+
+    @Override
+    public TedisFuture punsubscribe(String... patterns) {
+        setMode(TedisClient.TRADITIONAL);
+        return c.unsubscribe(patterns);
+    }
+
+    @Override
+    public TedisFuture publish(String channel, String msg) {
+        return null;
+    }
+
+    @Override
+    public TedisFuture pubsub(String subcommand, String... args) {
+        return null;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.tedis.client;
 
-import com.tedis.client.pool.TedisPool;
+import com.tedis.client.connection.Pipeline;
+import com.tedis.client.pool.ConnPool;
 import com.tedis.protocol.Result;
 import com.tedis.protocol.Results;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PipelineTest {
 
-    static TedisPool pool;
+    static ConnPool pool;
     static Pipeline p;
 
     @BeforeAll
     public static void before() {
-        pool = TedisPool.pool();
+        pool = ConnPool.pool();
         p = pool.pipeline();
     }
 
@@ -39,7 +40,7 @@ class PipelineTest {
                 i++;
             }
         } finally {
-            p.returnToPool();
+            p.recycle();
         }
     }
 }

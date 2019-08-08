@@ -12,7 +12,13 @@ public enum Cmd {
     HMSET("HMSET"),
     PING("PING"),
     SETBIT("SETBIT"),
-    GETBIT("GETBIT");
+    GETBIT("GETBIT"),
+    SUBSCRIBE("SUBSCRIBE"),
+    UNSUBSCRIBE("UNSUBSCRIBE"),
+    PSUBSCRIBE("PSUBSCRIBE"),
+    PUNSUBSCRIBE("PUNSUBSCRIBE"),
+    PUBLISH("PUBLISH"),
+    PUBSUB("PUBSUB");
 
 
     private String cmd;
