@@ -25,7 +25,6 @@ public class TedisClientTest {
         }
     }
 
-
     @Test
     public void subTest() {
         Tedis tedis = TedisClient.tedis();
