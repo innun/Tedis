@@ -1,6 +1,6 @@
 package com.tedis.api;
 
-import com.tedis.client.exception.ConnectFailException;
+import com.tedis.exception.ConnectFailException;
 import io.netty.channel.Channel;
 
 public interface Client {

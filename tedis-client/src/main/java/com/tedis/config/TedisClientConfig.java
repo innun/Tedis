@@ -1,6 +1,6 @@
 package com.tedis.config;
 
-import com.tedis.client.common.TedisURL;
+import com.tedis.common.TedisURL;
 
 public class TedisClientConfig {
     public static final String PROP_PREFIX = "com.tedis.client.";

@@ -1,6 +1,6 @@
 package com.tedis.tools;
 
-import com.tedis.client.connection.Pipeline;
+import com.tedis.connection.Pipeline;
 import com.tedis.protocol.Result;
 import com.tedis.protocol.Results;
 import org.slf4j.Logger;

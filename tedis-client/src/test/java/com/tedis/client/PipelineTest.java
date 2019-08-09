@@ -1,7 +1,7 @@
 package com.tedis.client;
 
-import com.tedis.client.connection.Pipeline;
-import com.tedis.client.pool.ConnPool;
+import com.tedis.connection.Pipeline;
+import com.tedis.pool.ConnPool;
 import com.tedis.protocol.Result;
 import com.tedis.protocol.Results;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,7 +1,7 @@
 package com.tedis.client;
 
-import com.tedis.client.connection.AbstractCommonConn;
-import com.tedis.client.pool.ConnPool;
+import com.tedis.connection.AbstractCommonConn;
+import com.tedis.pool.ConnPool;
 import com.tedis.protocol.Result;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,7 @@
 package com.tedis.api;
 
-import com.tedis.client.exception.ConnectFailException;
-import com.tedis.client.exception.IllegalLockOperation;
+import com.tedis.exception.ConnectFailException;
+import com.tedis.exception.IllegalLockOperation;
 
 import java.io.IOException;
 

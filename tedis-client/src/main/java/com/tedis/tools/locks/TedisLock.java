@@ -1,9 +1,9 @@
 package com.tedis.tools.locks;
 
 import com.tedis.api.Lock;
-import com.tedis.client.connection.TraditionalConn;
-import com.tedis.client.connection.CommonCmd;
-import com.tedis.client.exception.IllegalLockOperation;
+import com.tedis.connection.TraditionalConn;
+import com.tedis.connection.CommonCmd;
+import com.tedis.exception.IllegalLockOperation;
 import com.tedis.protocol.Result;
 import com.tedis.util.LuaScriptReader;
 import com.tedis.util.UniqueCodeGenerator;

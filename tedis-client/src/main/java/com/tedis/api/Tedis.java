@@ -1,9 +1,9 @@
 package com.tedis.api;
 
 import com.tedis.annotation.SkipIssueCheck;
-import com.tedis.client.common.TedisFuture;
-import com.tedis.client.connection.CommonCmd;
-import com.tedis.client.connection.SubCmd;
+import com.tedis.common.TedisFuture;
+import com.tedis.connection.CommonCmd;
+import com.tedis.connection.SubCmd;
 import com.tedis.protocol.Results;
 import com.tedis.tools.BloomFilter;
 import com.tedis.tools.locks.TedisLock;

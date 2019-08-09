@@ -1,8 +1,8 @@
 package benchmark;
 
-import com.tedis.client.connection.Pipeline;
-import com.tedis.client.connection.TraditionalConn;
-import com.tedis.client.pool.ConnPool;
+import com.tedis.connection.Pipeline;
+import com.tedis.connection.TraditionalConn;
+import com.tedis.pool.ConnPool;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

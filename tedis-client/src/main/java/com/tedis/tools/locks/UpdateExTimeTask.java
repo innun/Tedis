@@ -1,6 +1,6 @@
 package com.tedis.tools.locks;
 
-import com.tedis.client.connection.CommonCmd;
+import com.tedis.connection.CommonCmd;
 import com.tedis.protocol.Result;
 import com.tedis.util.LuaScriptReader;
 

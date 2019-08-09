@@ -1,12 +1,12 @@
 package com.tedis;
 
 import com.tedis.api.Tedis;
-import com.tedis.client.common.TedisFuture;
-import com.tedis.client.connection.Pipeline;
-import com.tedis.client.connection.Subscription;
-import com.tedis.client.connection.TraditionalConn;
-import com.tedis.client.pool.ConnPool;
-import com.tedis.client.proxy.TedisInvocationHandler;
+import com.tedis.common.TedisFuture;
+import com.tedis.connection.Pipeline;
+import com.tedis.connection.Subscription;
+import com.tedis.connection.TraditionalConn;
+import com.tedis.pool.ConnPool;
+import com.tedis.proxy.TedisInvocationHandler;
 import com.tedis.protocol.Results;
 import com.tedis.tools.BloomFilter;
 import com.tedis.tools.locks.TedisLock;
