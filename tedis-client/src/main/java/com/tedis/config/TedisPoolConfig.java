@@ -17,7 +17,9 @@ public class TedisPoolConfig {
     }
 
     public TedisPoolConfig maxConns(String maxConns) {
-        this.maxConns = Integer.parseInt(maxConns);
+        int i = Integer.parseInt(maxConns);
+        i = i <= 0 ? Integer.MAX_VALUE : i;
+        this.maxConns = i;
         return this;
     }
 

@@ -1,7 +1,7 @@
 package com.tedis.client;
 
-import com.tedis.client.connection.Connection;
 import com.tedis.client.common.TedisFuture;
+import com.tedis.client.connection.TraditionalConn;
 import com.tedis.client.pool.ConnPool;
 import com.tedis.protocol.Result;
 import com.tedis.util.LuaScriptReader;
@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 public class ScriptExecutor {
     private static Logger log = LoggerFactory.getLogger(ScriptExecutor.class);
     private static ConnPool pool;
-    private static Connection<Result> conn;
+    private static TraditionalConn conn;
 
     static {
         pool = ConnPool.pool();
-        conn = pool.connection();
+        conn = pool.traditionalConn();
     }
 
     public static TedisFuture<Result> execute(String scriptFileName, int keyNum, String... args) {

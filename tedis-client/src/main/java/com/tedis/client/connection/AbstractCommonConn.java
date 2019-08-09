@@ -3,12 +3,9 @@ package com.tedis.client.connection;
 import com.tedis.client.common.Cmd;
 import com.tedis.client.common.TedisFuture;
 import com.tedis.client.pool.ConnPool;
-import com.tedis.protocol.Command;
 import io.netty.channel.Channel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class AbstractCommonConn<T> extends AbstractBaseConn<T> implements CommonCmd<T> {
 
@@ -89,19 +86,11 @@ public abstract class AbstractCommonConn<T> extends AbstractBaseConn<T> implemen
 
     @Override
     public TedisFuture<T> publish(String channel, String msg) {
-        return send(Cmd.PUBLISH, msg);
+        return send(Cmd.PUBLISH, (String[]) Arrays.asList(channel, msg).toArray());
     }
 
     @Override
     public TedisFuture<T> pubsub(String subcommand, String... args) {
         return send(Cmd.PUBSUB, (String[]) Arrays.asList(subcommand, args).toArray());
-    }
-    
-    Command generateCmd(Cmd cmd, String... params) {
-        String cmdName = cmd.getCmd();
-        List<String> parts = new ArrayList<>();
-        parts.add(cmdName);
-        parts.addAll(Arrays.asList(params));
-        return new Command(parts);
     }
 }

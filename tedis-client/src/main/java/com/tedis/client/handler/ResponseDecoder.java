@@ -1,5 +1,6 @@
 package com.tedis.client.handler;
 
+import com.tedis.client.connection.AbstractBaseConn;
 import com.tedis.client.connection.AbstractCommonConn;
 import com.tedis.protocol.RESPData;
 import com.tedis.protocol.Result;
@@ -27,10 +28,38 @@ public class ResponseDecoder extends ByteToMessageDecoder {
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
         Channel channel = ctx.channel();
         int resultNum = channel.attr(AbstractCommonConn.RESULT_KEY).get();
-        if (resultNum == -1) {
+        if (resultNum == AbstractBaseConn.TRADITIONAL_CONN_RESULT) {
             decodeResult(in, out);
+        } else if (resultNum == AbstractBaseConn.SUBSCRIBE_RESULT) {
+            Result result;
+            if ((result = decodeResult(in, out)) != null) {
+                System.out.println("=>" + result.getResult());
+            }
         } else {
             decodeResults(in, out, resultNum);
+        }
+    }
+
+    private Result decodeResult(ByteBuf in, List<Object> out) {
+        Result result = decode(in);
+        if (result != null) {
+            out.add(result);
+            log.info("Result arrived => {}({})", logStr.toString(), result);
+            logStr = new StringBuilder();
+        }
+        return result;
+    }
+
+    private void decodeResults(ByteBuf in, List<Object> out, int resultNum) {
+        Result result = decode(in);
+        if (result != null) {
+            results.add(result);
+        }
+        if (results.size() == resultNum) {
+            out.add(new Results(results));
+            log.info("Results arrived => {}({})", logStr.toString(), results);
+            logStr = new StringBuilder();
+            results = new ArrayList<>();
         }
     }
 
@@ -81,28 +110,6 @@ public class ResponseDecoder extends ByteToMessageDecoder {
         int curRdIdx = in.readerIndex();
         in.readerIndex(curRdIdx + res.getRawLen());
         return result;
-    }
-
-    private void decodeResult(ByteBuf in, List<Object> out) {
-        Result result = decode(in);
-        if (result != null) {
-            out.add(result);
-            log.info("Result arrived => {}({})", logStr.toString(), result);
-            logStr = new StringBuilder();
-        }
-    }
-
-    private void decodeResults(ByteBuf in, List<Object> out, int resultNum) {
-        Result result = decode(in);
-        if (result != null) {
-            results.add(result);
-        }
-        if (results.size() == resultNum) {
-            out.add(new Results(results));
-            log.info("Results arrived => {}({})", logStr.toString(), results);
-            logStr = new StringBuilder();
-            results = new ArrayList<>();
-        }
     }
 
     private void logDecoder(ByteBuf buf, int len, Result res) {

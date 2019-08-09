@@ -3,11 +3,12 @@ package com.tedis.api;
 import com.tedis.annotation.SkipIssueCheck;
 import com.tedis.client.common.TedisFuture;
 import com.tedis.client.connection.CommonCmd;
+import com.tedis.client.connection.SubCmd;
 import com.tedis.protocol.Results;
 import com.tedis.tools.BloomFilter;
 import com.tedis.tools.locks.TedisLock;
 
-public interface Tedis extends CommonCmd {
+public interface Tedis extends CommonCmd, SubCmd {
 
     @SkipIssueCheck
     void setMode(int mode);

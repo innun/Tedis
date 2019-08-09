@@ -1,7 +1,8 @@
 package com.tedis.tools.locks;
 
-import com.tedis.client.connection.Connection;
 import com.tedis.api.Lock;
+import com.tedis.client.connection.TraditionalConn;
+import com.tedis.client.connection.CommonCmd;
 import com.tedis.client.exception.IllegalLockOperation;
 import com.tedis.protocol.Result;
 import com.tedis.util.LuaScriptReader;
@@ -16,7 +17,7 @@ public class TedisLock implements Lock {
     static final String LOCK_KEY;
     private static String expireTime;
 
-    private Connection<Result> conn;
+    private CommonCmd<Result> conn;
     private static final String UNIQUE_CODE;
     private UpdateExTimeTask task;
     private Thread updateThread;
@@ -29,11 +30,11 @@ public class TedisLock implements Lock {
     /**
      * default lock expire time: 3600 seconds
      */
-    public TedisLock(Connection<Result> conn) {
+    public TedisLock(TraditionalConn conn) {
         this(conn,3600);
     }
 
-    public TedisLock(Connection<Result> conn, int expireTime) {
+    public TedisLock(TraditionalConn conn, int expireTime) {
         this.conn = conn;
         task = new UpdateExTimeTask(conn);
         updateThread = new Thread(task);

@@ -20,14 +20,14 @@ class TedisClientPoolTest {
         Connection conn4 = null;
         Connection conn5 = null;
         try {
-            conn1 = pool.connection();
-            conn2 = pool.connection();
-            conn3 = pool.connection();
-            conn4 = pool.connection();
+            conn1 = pool.traditionalConn();
+            conn2 = pool.traditionalConn();
+            conn3 = pool.traditionalConn();
+            conn4 = pool.traditionalConn();
             assertEquals(pool.getActiveConns().get(), 4);
             assertEquals(pool.getIdleConns().get(), 0);
             assertEquals(pool.getTotalConns().get(), 4);
-            conn5 = pool.connection();
+            conn5 = pool.traditionalConn();
             assertEquals(pool.getActiveConns().get(), 5);
             assertEquals(pool.getIdleConns().get(), 0);
             assertEquals(pool.getTotalConns().get(), 5);

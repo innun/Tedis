@@ -10,7 +10,7 @@ public class TedisClientTest {
     public void pingTest() {
         Tedis tedis = TedisClient.tedis();
         tedis.ping();
-        tedis.ping();
+        tedis.ping("HELLO");
     }
 
     @Test
@@ -25,11 +25,17 @@ public class TedisClientTest {
         }
     }
 
+
     @Test
-    public void proxyTest() {
+    public void subTest() {
         Tedis tedis = TedisClient.tedis();
         tedis.subscribe("news.it");
-        tedis.close();
+    }
+
+    @Test
+    public void publishTest() {
+        Tedis tedis = TedisClient.tedis();
+        tedis.publish("news", "hello");
     }
 
 }

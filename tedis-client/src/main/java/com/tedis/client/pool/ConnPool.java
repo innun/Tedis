@@ -1,8 +1,9 @@
 package com.tedis.client.pool;
 
+import com.tedis.client.DefaultClient;
 import com.tedis.client.connection.Connection;
 import com.tedis.client.connection.Pipeline;
-import com.tedis.client.DefaultClient;
+import com.tedis.client.connection.Subscription;
 import com.tedis.client.connection.TraditionalConn;
 import com.tedis.client.exception.ConnectFailException;
 import com.tedis.config.TedisClientConfig;
@@ -86,9 +87,9 @@ public class ConnPool {
         return instance;
     }
 
-    public TraditionalConn connection() {
+    public TraditionalConn traditionalConn() {
         checkIdle();
-        TraditionalConn conn = new TraditionalConn(pool.removeFirst(), this);
+        TraditionalConn conn = new TraditionalConn(this, pool.removeFirst());
         idleConns.getAndDecrement();
         activeConns.getAndIncrement();
         if (!conn.auth(client.getPassword()).sync().getResult().equals("\"OK\"")) {
@@ -99,15 +100,30 @@ public class ConnPool {
 
     public Pipeline pipeline() {
         checkIdle();
-        Pipeline p = new Pipeline(pool.removeFirst(), this);
-        idleConns.getAndDecrement();
-        activeConns.getAndIncrement();
+        Pipeline p = new Pipeline(this, getPooledChannel());
         p.auth(client.getPassword());
         Results r = p.submit().sync();
         if (!r.getResults().get(0).getResult().equals("\"OK\"")) {
             throw new ConnectFailException("invalid password");
         }
         return p;
+    }
+
+    public Subscription subscription() {
+        checkIdle();
+        TraditionalConn conn = traditionalConn();
+        if (!conn.auth(client.getPassword()).sync().getResult().equals("\"OK\"")) {
+            throw new ConnectFailException("invalid password");
+        }
+        Channel channel = conn.channel();
+        return new Subscription(this, channel);
+    }
+
+    private Channel getPooledChannel() {
+        Channel c = pool.removeFirst();
+        idleConns.getAndDecrement();
+        activeConns.getAndIncrement();
+        return c;
     }
 
     private void checkIdle() {
@@ -120,29 +136,33 @@ public class ConnPool {
         }
     }
 
-    public void recycle(Connection conn) {
-        if (totalConns.get() > coreConns) {
-            conn.close();
-            activeConns.getAndDecrement();
-            totalConns.getAndDecrement();
-        } else {
-            if (validate(conn.channel())) {
-                pool.addLast(conn.channel());
-                idleConns.getAndIncrement();
-                activeConns.getAndDecrement();
-            } else {
-                totalConns.getAndDecrement();
-                log.info("channel {} invalid, add a new one to pool.", conn.channel());
-                addChannel();
-                activeConns.getAndDecrement();
+    public void recycle(Connection... conn) {
+        for (Connection c : conn) {
+            if (c != null) {
+                if (totalConns.get() > coreConns) {
+                    c.close();
+                    activeConns.getAndDecrement();
+                    totalConns.getAndDecrement();
+                } else {
+                    if (validate(c.channel())) {
+                        pool.addLast(c.channel());
+                        idleConns.getAndIncrement();
+                        activeConns.getAndDecrement();
+                    } else {
+                        totalConns.getAndDecrement();
+                        log.info("channel {} invalid, add a new one to pool.", c.channel());
+                        addChannel();
+                        activeConns.getAndDecrement();
+                    }
+                }
             }
         }
     }
 
     private boolean validate(Channel channel) {
-        TraditionalConn conn = new TraditionalConn(channel, this);
+        TraditionalConn conn = new TraditionalConn(this, channel);
         String result = conn.ping().sync().getResult();
-        System.out.println(result);
+        System.out.println(result + result.equals("\"PONG\""));
         if (!result.equals("\"PONG\"")) {
             try {
                 channel.close().sync();

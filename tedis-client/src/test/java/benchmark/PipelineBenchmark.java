@@ -1,21 +1,20 @@
 package benchmark;
 
-import com.tedis.client.connection.Connection;
 import com.tedis.client.connection.Pipeline;
+import com.tedis.client.connection.TraditionalConn;
 import com.tedis.client.pool.ConnPool;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class PipelineBenchmark {
-    static Connection conn1;
-    static Connection conn2;
+    static TraditionalConn conn1;
     static ConnPool pool;
     static Pipeline p;
 
     @BeforeAll
     public static void before() {
         pool = ConnPool.pool();
-        conn1 = pool.connection();
+        conn1 = pool.traditionalConn();
         p = pool.pipeline();
     }
     @Test

@@ -1,12 +1,18 @@
 package com.tedis.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class TedisProperties {
+    private static final Logger log = LoggerFactory.getLogger(TedisProperties.class);
+
     private static final int CR = '\r';
     private static final int LF = '\n';
     private static final int SPC = ' ';
@@ -56,6 +62,7 @@ public class TedisProperties {
                 idx++;
                 checkBuf();
             }
+            idx++;
         }
         
         private String readKey() {
@@ -112,6 +119,7 @@ public class TedisProperties {
         while (!isOver) {
             buffer.readProperty();
         }
+        log.info("Properties loaded {}", properties);
     }
 
     private void load() {

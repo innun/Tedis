@@ -3,11 +3,9 @@ package com.tedis.client.connection;
 import com.tedis.client.common.Cmd;
 import com.tedis.client.common.TedisFuture;
 import com.tedis.client.pool.ConnPool;
-import com.tedis.protocol.Command;
-import com.tedis.protocol.Commands;
-import com.tedis.protocol.Request;
-import com.tedis.protocol.Results;
+import com.tedis.protocol.*;
 import io.netty.channel.Channel;
+import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 
 public class Pipeline extends AbstractCommonConn<Results> {
@@ -30,7 +28,17 @@ public class Pipeline extends AbstractCommonConn<Results> {
     public TedisFuture<Results> submit() {
         Request<Commands> req = new Request<>(cmds);
         TedisFuture<Results> future = new TedisFuture<>();
-        channel.attr(FUTURE_KEY).set(future);
+
+        // FIXME: @ref class TraditionalConn#send
+        Attribute<TedisFuture<Results>> attr = channel.attr(FUTURE_KEY);
+        if (attr.get() != null) {
+            attr.get().whenComplete((r, e) -> {
+                attr.set(future);
+            });
+        } else {
+            attr.set(future);
+        }
+
         channel.attr(RESULT_KEY).set(cmds.getCmds().size());
         try {
             channel.writeAndFlush(req).sync();

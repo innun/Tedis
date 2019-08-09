@@ -1,16 +1,16 @@
 package com.tedis.tools.locks;
 
-import com.tedis.client.connection.Connection;
+import com.tedis.client.connection.CommonCmd;
 import com.tedis.protocol.Result;
 import com.tedis.util.LuaScriptReader;
 
 public class UpdateExTimeTask implements Runnable {
 
     private boolean flag = true;
-    private Connection<Result> conn;
+    private CommonCmd<Result> conn;
     private static int INCR = 10;
 
-    public UpdateExTimeTask(Connection conn) {
+    public UpdateExTimeTask(CommonCmd<Result> conn) {
         this.conn = conn;
     }
 
