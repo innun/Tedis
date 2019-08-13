@@ -4,25 +4,20 @@
 
 ```
 typedef struct redisObject {
-
     // 类型
     unsigned type:4;
-
     // 编码
     unsigned encoding:4;
-
     // 指向底层实现数据结构的指针
     void *ptr;
-
     // ...
-
 } robj;
 ```
 
 ### 1.1 Type类型
 
 | 对象         | 对象 `type` 属性的值 | TYPE 命令的输出 |
-| :----------- | :------------------- | :-------------- |
+| ----------- | ------------------- | -------------- |
 | 字符串对象   | `REDIS_STRING`       | `"string"`      |
 | 列表对象     | `REDIS_LIST`         | `"list"`        |
 | 哈希对象     | `REDIS_HASH`         | `"hash"`        |
@@ -32,15 +27,15 @@ typedef struct redisObject {
 ### 1.2 Encoding编码
 
 | 对象所使用的底层数据结构      | 编码常量                    | OBJECT ENCODING 命令输出 |
-| :---------------------------- | :-------------------------- | :----------------------- |
-| 整数                          | `REDIS_ENCODING_INT`        | `"int"`                  |
-| `embstr` 编码的简单动态字符串 | `REDIS_ENCODING_EMBSTR`     | `"embstr"`               |
-| 简单动态字符串                | `REDIS_ENCODING_RAW`        | `"raw"`                  |
-| 字典                          | `REDIS_ENCODING_HT`         | `"hashtable"`            |
-| 双端链表                      | `REDIS_ENCODING_LINKEDLIST` | `"linkedlist"`           |
-| 压缩列表                      | `REDIS_ENCODING_ZIPLIST`    | `"ziplist"`              |
-| 整数集合                      | `REDIS_ENCODING_INTSET`     | `"intset"`               |
-| 跳跃表和字典                  | `REDIS_ENCODING_SKIPLIST`   | `"skiplist"`             |
+| ---------------------------- | -------------------------- | ---|
+| 整数       | `REDIS_ENCODING_INT`   | `"int"` |
+| `embstr` 编码的简单动态字符串 | `REDIS_ENCODING_EMBSTR` | `"embstr"` |
+| 简单动态字符串| `REDIS_ENCODING_RAW`        | `"raw"`|
+| 字典        | `REDIS_ENCODING_HT`         | `"hashtable"` |
+| 双端链表     | `REDIS_ENCODING_LINKEDLIST` | `"linkedlist"`|
+| 压缩列表     | `REDIS_ENCODING_ZIPLIST`    | `"ziplist"`   |
+| 整数集合      | `REDIS_ENCODING_INTSET`| `"intset"`|
+| 跳跃表和字典   | `REDIS_ENCODING_SKIPLIST`  |`"skiplist"|
 
 ### 1.3 Type和Encoding对应关系
 

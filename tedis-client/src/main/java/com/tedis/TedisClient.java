@@ -151,6 +151,9 @@ public class TedisClient implements Tedis {
         if (p != null) {
             p.close();
         }
+        if (s != null) {
+            s.close();
+        }
         pool.close();
     }
 

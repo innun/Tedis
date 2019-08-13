@@ -120,6 +120,9 @@ public class ConnPool {
 
     private Channel getPooledChannel() {
         Channel c = pool.removeFirst();
+        if (!validate(c)) {
+            c = client.connect();
+        }
         idleConns.getAndDecrement();
         activeConns.getAndIncrement();
         return c;
@@ -159,9 +162,11 @@ public class ConnPool {
     }
 
     private boolean validate(Channel channel) {
+        if (!channel.isActive()) {
+            return false;
+        }
         TraditionalConn conn = new TraditionalConn(this, channel);
         String result = conn.ping().sync().getResult();
-        System.out.println(result + result.equals("\"PONG\""));
         if (!result.equals("\"PONG\"")) {
             try {
                 channel.close().sync();

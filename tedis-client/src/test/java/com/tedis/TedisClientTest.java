@@ -37,4 +37,13 @@ public class TedisClientTest {
         tedis.publish("news", "hello");
     }
 
+    @Test
+    public void futureTest() {
+        Tedis tedis = TedisClient.tedis();
+        Result a = (Result) tedis.ping().sync();
+        Result b = (Result) tedis.set("a", "1").sync();
+        Result r = (Result) tedis.set("b", "2").sync();
+        System.out.println(a.getResult() + b.getResult() + r.getResult());
+    }
+
 }

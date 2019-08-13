@@ -32,9 +32,8 @@ public class Pipeline extends AbstractCommonConn<Results> {
         // FIXME: @ref class TraditionalConn#send
         Attribute<TedisFuture<Results>> attr = channel.attr(FUTURE_KEY);
         if (attr.get() != null) {
-            attr.get().whenComplete((r, e) -> {
-                attr.set(future);
-            });
+            attr.get().sync();
+            attr.set(future);
         } else {
             attr.set(future);
         }

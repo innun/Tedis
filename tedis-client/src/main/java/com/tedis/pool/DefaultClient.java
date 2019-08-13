@@ -20,7 +20,6 @@ public final class DefaultClient implements Client {
 
     private EventLoopGroup eventLoopGroup;
     private Bootstrap bootstrap;
-    private Channel channel;
     private String host;
     private int port;
     private String password;
@@ -52,6 +51,7 @@ public final class DefaultClient implements Client {
     @Override
     public Channel connect() throws ConnectFailException {
         ChannelFuture f;
+        Channel channel = null;
         try {
             f = bootstrap.connect(host, port).sync();
             channel = f.channel();
@@ -61,15 +61,13 @@ public final class DefaultClient implements Client {
         return channel;
     }
 
-    public Channel getChannel() {
-        return channel;
-    }
-
     @Override
     public void close() {
-        channel.close();
-        log.info("connection => {} now closed", channel);
+        eventLoopGroup.shutdownGracefully();
     }
+
+
+
 
     public String getPassword() {
         return password;

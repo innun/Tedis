@@ -34,7 +34,8 @@ public class TraditionalConn extends AbstractCommonConn<Result> {
 
         Attribute<TedisFuture<Result>> attr = channel.attr(FUTURE_KEY);
         if (attr.get() != null) {
-            attr.get().whenComplete((r, e) -> attr.set(future));
+            attr.get().sync();
+            attr.set(future);
         } else {
             attr.set(future);
         }
