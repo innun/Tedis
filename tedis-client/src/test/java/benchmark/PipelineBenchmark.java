@@ -62,8 +62,8 @@ public class PipelineBenchmark {
 
     @Test
     public void benchmark() {
-//        round(1, 1000);
-        round(100, 100);
-        round(1000, 100);
+        round(1, 100);
+//        round(100, 100);
+//        round(1000, 100);
      }
 }

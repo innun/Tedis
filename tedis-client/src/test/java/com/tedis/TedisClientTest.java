@@ -11,6 +11,7 @@ public class TedisClientTest {
         Tedis tedis = TedisClient.tedis();
         tedis.ping();
         tedis.ping("HELLO");
+        tedis.close();
     }
 
     @Test
@@ -23,18 +24,25 @@ public class TedisClientTest {
         for (Result r : tedis.submit().sync()) {
             System.out.println(r.getResult());
         }
+        tedis.close();
     }
 
     @Test
     public void subTest() {
         Tedis tedis = TedisClient.tedis();
-        tedis.subscribe("news.it");
+        tedis.subscribe("news");
+    }
+
+    @Test void psubTest() {
+        Tedis tedis = TedisClient.tedis();
+        tedis.psubscribe("n*");
     }
 
     @Test
     public void publishTest() {
         Tedis tedis = TedisClient.tedis();
         tedis.publish("news", "hello");
+        tedis.close();
     }
 
     @Test

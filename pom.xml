@@ -7,7 +7,7 @@
     <groupId>com.tedis</groupId>
     <artifactId>Tedis</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
     <modules>
         <module>tedis-client</module>
     </modules>

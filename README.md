@@ -88,7 +88,5 @@ public bloomFilterTest() {
 
 ## Structure
 
-![](/doc/Request.png)
-
-![](doc/Response.png)
+![](/doc/structure.png)
 
