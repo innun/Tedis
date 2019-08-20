@@ -1,4 +1,4 @@
-package benchmark;
+package com.tedis.benchmark;
 
 import com.tedis.connection.Pipeline;
 import com.tedis.connection.TraditionalConn;

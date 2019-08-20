@@ -10,6 +10,7 @@
     <version>0.1</version>
     <modules>
         <module>tedis-client</module>
+        <module>tedis-benchmark</module>
     </modules>
 
     <dependencies>

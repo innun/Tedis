@@ -19,6 +19,11 @@ public class TedisInvocationHandler implements InvocationHandler {
                 tedisClient.getMode() == TedisClient.SUB) {
             throw new RuntimeException("Not supposed to issue any other commands in subscribe mode");
         }
+        int mode = tedisClient.getMode();
+        // in case conn timeout
+        if (!tedisClient.getConn().channel().isActive()) {
+            tedisClient.setMode(mode);
+        }
         return method.invoke(tedisClient, args);
     }
 }

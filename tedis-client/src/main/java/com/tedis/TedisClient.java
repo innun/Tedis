@@ -2,12 +2,13 @@ package com.tedis;
 
 import com.tedis.api.Tedis;
 import com.tedis.common.TedisFuture;
+import com.tedis.connection.Connection;
 import com.tedis.connection.Pipeline;
 import com.tedis.connection.Subscription;
 import com.tedis.connection.TraditionalConn;
 import com.tedis.pool.ConnPool;
-import com.tedis.proxy.TedisInvocationHandler;
 import com.tedis.protocol.Results;
+import com.tedis.proxy.TedisInvocationHandler;
 import com.tedis.tools.BloomFilter;
 import com.tedis.tools.locks.TedisLock;
 
@@ -26,7 +27,7 @@ public class TedisClient implements Tedis {
     private TraditionalConn c;
     private Subscription s;
 
-    private TedisClient() {
+    public TedisClient() {
         init();
     }
 
@@ -58,6 +59,18 @@ public class TedisClient implements Tedis {
             pool.recycle(c, p);
             s = pool.subscription();
         }
+    }
+
+    public Connection getConn() {
+        switch (mode) {
+            case TRADITIONAL:
+                return c;
+            case PIPELINE:
+                return p;
+            case SUB:
+                return s;
+        }
+        return null;
     }
 
     @Override
